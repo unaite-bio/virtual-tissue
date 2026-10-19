@@ -1,0 +1,66 @@
+# ------------------------------------------------------------
+# Data never lives in git. This list is a backstop, not the rule.
+# ------------------------------------------------------------
+data/
+raw/
+**/spatial/
+
+# single-cell and spatial matrices
+*.h5ad
+*.h5
+*.hdf5
+*.h5mu
+*.loom
+*.mtx
+*.mtx.gz
+*.zarr
+*.zarr/
+*.parquet
+*.feather
+*.csv.gz
+*.tsv.gz
+
+# whole-slide and multiplexed images (H&E, PhenoCycler, Xenium, Visium)
+*.svs
+*.ndpi
+*.mrxs
+*.scn
+*.vsi
+*.czi
+*.tif
+*.tiff
+*.ome.tif
+*.ome.tiff
+*.qptiff
+*.btf
+
+# arrays and model weights (large, and weights can memorise data)
+*.npy
+*.npz
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+
+# ------------------------------------------------------------
+# Environments, caches, run outputs
+# ------------------------------------------------------------
+.venv/
+venv/
+env/
+.env
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+wandb/
+mlruns/
+outputs/
+runs/
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
