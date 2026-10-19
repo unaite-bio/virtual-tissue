@@ -26,3 +26,4 @@ pre-commit install
   and commit both files in the same PR.
 - Mark GPU or long tests with `@pytest.mark.gpu` / `@pytest.mark.slow`
   and run them locally before requesting review.
+- Questions about the workflow? Open an issue with the `docs` label.
