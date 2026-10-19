@@ -1,0 +1,23 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: conda-lock.yml
+          environment-name: virtual-tissue
+          cache-environment: true
+      - run: pip install -e .
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: pytest
