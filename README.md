@@ -113,4 +113,3 @@ Gary Klajer · Christian Langridge · Faith Ogundimu · Amine Ould · Raphaël R
 <p align="center">
   <sub>Part of the <a href="https://fellowship.unaite.fr">Unaite Fellowship for AI in Biology</a> &nbsp;·&nbsp; Paris, 2026-27</sub>
 </p>
-test
