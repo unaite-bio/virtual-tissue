@@ -11,8 +11,8 @@ jobs:
       run:
         shell: bash -el {0}
     steps:
-      - uses: actions/checkout@v4
-      - uses: mamba-org/setup-micromamba@v2
+      - uses: actions/checkout@v5
+      - uses: mamba-org/setup-micromamba@v3
         with:
           environment-file: conda-lock.yml
           environment-name: virtual-tissue
