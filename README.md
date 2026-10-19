@@ -24,17 +24,12 @@
   &nbsp;&nbsp;·&nbsp;&nbsp;
   <a href="#the-project-brief">The brief</a>
   &nbsp;&nbsp;·&nbsp;&nbsp;
-  <a href="#status">Status</a>
-  &nbsp;&nbsp;·&nbsp;&nbsp;
   <a href="#team">Team</a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-preliminary-8B84D7" alt="status: preliminary">
   <img src="https://img.shields.io/badge/Unaite_Fellowship-2026--27-171A41" alt="Unaite Fellowship 2026-27">
   <img src="https://img.shields.io/badge/modalities-H%26E_%C2%B7_Visium_%C2%B7_PhenoCycler-6E62D9" alt="modalities: H&amp;E, Visium, PhenoCycler">
-  <img src="https://img.shields.io/badge/data-never_in_git-2A9D8F" alt="data: never in git">
-  <img src="https://img.shields.io/badge/results-none_yet-5D6B7A" alt="results: none yet">
 </p>
 
 <p align="center">
@@ -97,20 +92,6 @@ The project as set by our mentors: build an **interpretable** model for a cell-r
 **The deliverable:** a reusable multimodal model that turns sparse, heterogeneous measurements
 into a unified cellular map of the tumour microenvironment.
 
-The architecture itself is not decided yet. We will start with simple baselines and earn our way
-up from there.
-
----
-
-## Status
-
-**Preliminary.** As of October 2026:
-
-- The team and mentors are confirmed.
-- Data access is being arranged with Gustave Roussy. Nothing patient-derived is in this repository.
-- First step once data arrives: exploratory analysis, then simple baselines.
-- No results yet.
-
 ---
 
 ## Team
@@ -126,18 +107,6 @@ up from there.
 **Fellows**
 
 Gary Klajer · Christian Langridge · Faith Ogundimu · Amine Ould · Raphaël Rubrice
-
----
-
-## Working together
-
-- **Team meeting:** weekly, Mondays.
-- **Mentor check-ins:** roughly every four weeks.
-- **Code lives here. Data never does.** The `.gitignore` blocks the common imaging, spatial and
-  single-cell formats as a backstop, but the rule is ours to keep, not the file's. Anything that
-  needs sharing goes through whatever storage Gustave Roussy approves.
-- **Visibility and licence:** private for now. Both get agreed with the mentors before anything
-  is made public.
 
 ---
 
