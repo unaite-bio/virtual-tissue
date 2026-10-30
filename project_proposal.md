@@ -45,10 +45,14 @@ The deliverable is an open benchmark to be confirmed but could include:
 | Eva (Liu et al., bioRxiv 2026; Enable Medicine, Stanford, HKU) | Multiplexed protein + H&E (H&E as extra input channels) | Joint MIF/H&E masked autoencoder vs VirTues, KRONOS (protein), ROSIE, GigaTIME (H&E→MIF), UNI, Prov-GigaPath (H&E) | No transcriptomics; developer-run evaluation with random 8:1:1 splits; authors note no gold-standard dataset exists for objective comparison |
 | COSIE (Li et al., bioRxiv 2026) | H&E, Visium HD, PhenoCycler/CODEX and others | One integration framework vs StabMap and SpaMosaic | Not an encoder audit; modalities split across adjacent sections |
 | Ren et al. (Nat Commun 2025, SPATCH) | Visium HD and 3 other ST platforms + adjacent CODEX + H&E | Assay platforms | Compares measurement technologies, not encoders |
+| spora / spora [bench] (von Querfurth, Wenckstern et al., NeurIPS 2026 E&D; Bunne Lab, EPFL) | Multiplexed protein (IF, Orion, IMC, CODEX, MIBI), with paired H&E for ~31% of tiles | VirTues, KRONOS, Eva vs baselines; H&E→protein translators (ROSIE, HistoPlexer, GigaTIME); 6 tasks from subcellular to patient level | No transcriptomics; no fusion beyond H&E→protein; built by the group that developed VirTues, so not fully independent |
+| spEMO (Liu T. et al., Nat Biomed Eng 2026) | H&E + ST, and spatial RNA + protein (sequencing-based) | Pathology FM (and LLM) embeddings fused with omics; adds a multi-modal alignment task for pathology FMs | Developer-run; no protein imaging encoder; no tri-modal same-section setting |
+| SpaMBench (2026, GitHub/Zenodo) | Spatial RNA + protein (ADT) and RNA + ATAC | 18 spatial multi-omics integration methods on 16 datasets, with masking/noise/coordinate perturbations | No H&E; no pretrained encoders; protein is spot-level ADT, not imaging |
+| Liu C. et al. (Nat Methods 2025) | Single-cell RNA, ADT, ATAC (+ spatial registration) | 40 integration methods across vertical, diagonal, mosaic and cross integration | Not spatial imaging; no H&E; no encoders |
 
 ### 2.2 The gap
 
-We found no published study that holds the specimens, spatial units, probes and splits constant while varying **pretrained encoders and fusion strategies across all three modalities**. We also found none that does so on **same-section** tri-modal data held out from all tools' training and validation. Two independent literature sweeps (manual, and an Edison agent search) reached the same conclusion. Worth rechecking independently again as this is a literature-search finding, not proof of absence.
+We found no published study that holds the specimens, spatial units, probes and splits constant while varying **pretrained encoders and fusion strategies across all three modalities**. We also found none that does so on **same-section** tri-modal data held out from all tools' training and validation. Two independent literature sweeps (manual, and an Edison agent search) reached the same conclusion. Worth rechecking independently again as this is a literature-search finding, not proof of absence. A third check (30 Oct 2026) adding spora/spora [bench], spEMO, SpaMBench and the Liu et al. (2025) integration benchmark did not change this: each covers at most two of our three modalities, or covers integration methods without pretrained encoders.
 
 ### 2.3 Why it benchmark matters
 
@@ -98,12 +102,17 @@ Both are cases where a model that simply aligns modalities could look good while
 - H&E is done after PhenoCycler cycling and may differ from routine H&E.
 - HNSCC is represented in TCGA, which some pathology encoders were pretrained on. The patients are unseen; the tissue type may not be.
 - **Possible Enable Medicine overlap (must resolve before data freeze).** The Badoual PhenoCycler data was processed on the Enable Medicine platform. Eva was co-developed by Enable Medicine and its training set includes PhenoCycler data from Enable's platform, plus unspecified "additional multiplexed images". We need written confirmation that the Badoual slides were not in Eva's training data. Separately, Eva's training data includes a head-and-neck cancer PhenoCycler cohort (UPMC-HNC, 43 markers), so Eva has seen this tissue type even if not these patients.
+- **Possible spora overlap (check before data freeze).** spora includes head-and-neck multiplex cohorts. We should confirm none of them contains the Badoual or UPMC-HNC samples, and treat every spora cohort as potentially seen by VirTues (same group), KRONOS and Eva when interpreting protein-encoder results.
 
 ### 3.2 Supporting public data (for probe training and external comparison only)
 
 - **HEST-1k**: paired H&E + ST, including Visium.
 - **COSIE periodontal dataset**: H&E + Visium HD (section 1), PhenoCycler/CODEX + Visium HD (section 2).
 - **SPATCH (Ren et al., 2025)**: Visium HD and other ST platforms with adjacent CODEX and annotated H&E.
+- **spora (EPFL; [docs](https://spora.epfl.ch/docs/), [data](https://spora.bioimagearchive.org/))**: 13,546 standardised multiplex images from 5,477 patients, 35 cohorts, 14 tissue origins and 5 technologies (including CODEX), with paired H&E for ~31% of tiles, cell and tissue masks, cell types and marker-to-UniProt mapping. Uses for us: (a) large corpus for training protein- and H&E-side probes and SAEs; (b) `spora-io` marker harmonisation to map our PhenoCycler panel onto KRONOS/VirTues vocabularies; (c) `spora [bench]` task definitions (cell phenotyping, H&E→protein virtual staining) as a reference protocol so our protein-encoder numbers are comparable to theirs. Caveats: no transcriptomics; access is by credentials on request; `spora [bench]` code is CC BY-NC-ND 4.0 (we can run it but not redistribute modified versions, so our harness should reimplement any protocol we adapt); dataset licences vary per cohort.
+- **10x Visium CytAssist Gene and Protein Expression (CC BY 4.0)**: same-spot whole-transcriptome RNA + ~35-antibody immune panel (sequencing-based ADT) + H&E on the same section, for tonsil, breast cancer and lymph node. This is the closest public analogue of our Q1 setting (RNA vs protein at the same Visium spot) and lets us replicate the discordance atlas in other tissues. Note: the human lymph node sections were used to develop SpatialGlue and several later integration methods, so they are not held out for those methods.
+- **10x Xenium Protein (CC BY 4.0)**: same-cell RNA (~400 genes) + up to 27 proteins + post-Xenium H&E (e.g. renal cell carcinoma). Gives a single-cell, same-section tri-modal check for cell-level tasks (Q2 test 3).
+- **UnumLocalia (bioRxiv 2026; Zenodo 21713660)**: Xenium 5k + COMET 16-plex protein + H&E on the same FFPE section, four TMA cores (HCC, non-tumour liver, tonsil, hepatocellular adenoma), with alignment matrices and per-cell RNA + protein quantifications. Small, but independently generated same-section tri-modal data released after most current encoders.
 **Rule:** public data may be used to fit probes or heads. All headline results should be reported on the Badoual dataset.
 
 ---
@@ -114,22 +123,36 @@ Both are cases where a model that simply aligns modalities could look good while
 
 **(i) H&E image encoders** (initial candidates, to confirm in the inventory)
 - Pathology foundation models: UNI / UNI2, CONCH, Virchow2, H-Optimus-0/1, Phikon / Phikon-v2, Prov-GigaPath, CTransPath
+- Molecularly aligned pathology encoders (pathology FMs fine-tuned or pretrained with paired ST, sometimes protein): SEAL, H2O, STORM. Most were trained on HEST-1k, so check sample lists against the Badoual Visium release.
 - Baselines: ImageNet ResNet50, handcrafted morphology features
 **(ii) Visium RNA encoders**
 - Baselines: log-normalised HVGs, PCA
 - Foundation models: scGPT, Geneformer, UCE, CellPLM, Nicheformer, scGPT-spatial, Novae
 **(iii) PhenoCycler protein encoders**
-- Baselines: mean marker intensity per cell or pseudospot, PCA
+- Baselines: mean marker intensity per cell or pseudospot, PCA; cell-typing baselines used in spora [bench] (astir, MAPS)
 - Foundation models: KRONOS (public weights; accepts only markers it was pretrained on, so panel coverage must be checked), VirTues (public weights; IMC-trained, uses ESM protein embeddings)
 **(iv) Joint H&E + protein encoders**
 - Eva (H&E fed as extra channels alongside MIF; public weights not confirmed in the preprint text, so check availability)
 **(v) H&E → protein translators (as cross-modal baselines)**
 - ROSIE, GigaTIME, MIPHEI-ViT (all have public weights or code)
+- HistoPlexer (wrapped in spora [bench]; check weights and licence)
 **(vi) Fusion strategies**
 - Single-modality (each of the three)
 - Pairwise (H&E+RNA, H&E+protein, RNA+protein)
 - Tri-modal, with early fusion (concatenation), late fusion (prediction averaging) and cross-attention
-- Existing integration methods as reference points: COSIE, StabMap, SpaMosaic, HESCAPE-style contrastive alignment
+- Learned integration methods, treated as fusion operators (see below). Existing reference points: COSIE, StabMap, SpaMosaic, HESCAPE-style contrastive alignment
+
+*Why integration methods belong on the fusion axis.*
+1. **They perform the same function.** An integration method takes per-modality features of the same spots or cells and returns one joint latent; so do our fusion strategies. Concatenation, averaging and cross-attention are the simplest members of this family (early, late and intermediate fusion). Integration methods are intermediate fusion with extra structure: spatial graphs, contrastive alignment, shared/private factorisation, or count-based noise models. Leaving them out would compare fused foundation-model embeddings only against naive fusion.
+2. **They are compatible with holding encoders constant.** Most accept an arbitrary per-spot feature matrix (many default to PCA input), so they can run on top of each encoder's embeddings, giving an encoder × fuser grid. Methods that require raw counts (e.g. totalVI) are reported as end-to-end entries.
+3. **Aim 1 cannot be answered without them.** Whether integration forces agreement where the biology disagrees depends on the integration objective. Contrastive alignment rewards shared information; methods with explicit shared and modality-specific latents (e.g. SpaMV) or a protein background model (totalVI) should treat PD-L1 discordance differently. Without this contrast we cannot tell whether lost discordance is due to the encoder or to the fusion design.
+4. **They are the established baselines for fusion.** Just as PCA is the baseline for expression encoders (Hou et al., 2026), established integration methods are the baseline that a new fusion of foundation-model embeddings has to beat.
+5. **They map onto our section design.** The integration literature's vertical (same section) vs diagonal/mosaic (different sections or partially missing modalities) categories (Liu C. et al., 2025) correspond to our same- vs adjacent-section calibration and to incomplete-modality settings, so methods built for each case give a natural reading of that comparison.
+
+*Proposed scope* (each method must expose a joint latent usable by probes, SAEs and LEACE; methods that only output cluster labels are excluded; equal hyperparameter budget for all, since many defaults were tuned on the public lymph-node CytAssist data):
+- **Tier 1 (distinct fusion principles):** SpatialGlue (graph + dual attention; developed on Visium RNA + protein, the closest setting to ours), MISO (adds histology features to omics and models pairwise interactions), SpaMV (explicit shared vs modality-specific latents, a direct test of underlap), totalVI (probabilistic RNA + protein model with protein background; non-spatial reference), MOFA+ / MEFISTO (linear factors with readable loadings, useful for Aim 2), Seurat WNN (per-spot modality weights; cheap and interpretable), SpaMosaic or COSIE (mosaic; needed for adjacent-section and missing-modality settings).
+- **Tier 2 (if time allows):** GROVER (tri-modal including histology), spEMO, PHARAOH, COSMOS, PRAGA, SpaMode, StabMap, MultiVI, HESCAPE-style contrastive alignment.
+- **Cell ↔ spot matching:** MaxFuse, designed for weak linkage (few, weakly correlated linked features), for matching PhenoCycler cells to Visium RNA. Weak RNA–protein linkage is exactly the PD-L1 situation.
 ### 4.2 What is held constant
 - Specimens and registration
 - Spatial units (Visium spot / pseudospot, and single cell where available)
@@ -140,7 +163,40 @@ Both are cases where a model that simply aligns modalities could look good while
 
 ### 4.3 Aim 1: Integration quality metrics
 
-TBC
+*Proposal (to discuss).* All metrics are computed on each joint latent **and** on each unimodal latent, so every number has a unimodal reference. Unit: pseudospot by default, cell where available. We report each family separately rather than one aggregate score, since rankings depend on the metric (PathScaleBench).
+
+**A. Overlap: what is shared across modalities**
+
+| Metric | What it measures | Source |
+|---|---|---|
+| Linear CKA; mutual-kNN alignment | Similarity of representational geometry between unimodal latents | Kornblith et al., 2019; Huh et al., 2024 |
+| FOSCTTM; cross-modal retrieval Recall@k | Whether a spot's representation in one modality finds the same spot in the other | Liu J. et al., 2019 (MMD-MA); HESCAPE |
+| Cross-modal prediction R² (per feature) | How much of modality B is predictable from modality A's latent | HEST; Q1 test 1 |
+| PID redundancy | Task-relevant information present in both modalities | Liang et al., 2023 |
+
+**B. Underlap: what stays modality-specific or is lost**
+
+| Metric | What it measures | Source |
+|---|---|---|
+| Retention ratio | Probe performance for modality-*m* targets from the joint latent, divided by performance from modality *m*'s own latent; < 1 means integration lost unimodal information | Ours |
+| Neighbourhood preservation | Jaccard overlap between the joint kNN graph and each unimodal kNN graph | Standard in integration benchmarks |
+| PID uniqueness and synergy; sample-wise interaction (LSMI) | Information held by only one modality, or only by their combination; LSMI localises it per spot, so it can be mapped on the tissue | Liang et al., 2023; LSMI (ICML 2025) |
+| Modality reliance (perceptual score) | Performance drop when one modality's input is permuted across spots | Gat et al., 2021 |
+| Shared vs private decomposition | Which concepts sit in shared vs modality-specific components | LatentVerse (arXiv 2026); SpaMV |
+
+**C. Over-alignment: does integration force agreement where the biology disagrees?**
+- **Discordance preservation score.** Q1 test 2 as a metric: probe performance separating discordant from concordant pseudospots in the joint latent, normalised by the best unimodal latent. Below 1 means integration averaged the discordance away.
+- **Residual recovery.** Regress each protein on its RNA counterpart (and RNA neighbourhood); the residual is the RNA-unexplained protein signal. Report how well each latent predicts that residual. A latent that only aligns modalities should score near zero; one that keeps protein-specific information should approach the protein latent.
+- **Alignment vs uniqueness plot.** Recent work finds that maximising cross-modal alignment helps when information is mostly redundant and hurts when it is mostly modality-specific (Tjandrasuwita et al., 2025; "To align or not to align", 2025). Plotting each method's alignment (CKA / mutual-kNN) against its retention and residual recovery flags over-aligning methods (high alignment, low retention).
+
+**D. Conventional integration quality (sanity and comparability with the literature)**
+- Biological conservation: ARI, NMI, ASW, cLISI against pathologist annotations and PhenoCycler-derived composition (scIB).
+- Section and patient mixing: iLISI, kBET, read separately for PP+ST vs ST-only sections, where some separation is expected (scIB).
+- Spatial coherence: Moran's I, PAS, CHAOS (as in SpatialGlue and SpaMosaic).
+
+**E. Robustness to incomplete inputs**
+- Missing-modality degradation: drop one modality at inference and report the change in A–C.
+- Perturbations: feature masking, noise and coordinate jitter, as in SpaMBench.
 
 ### 4.4 Aim 2: Do the latents capture known biology?
 
@@ -217,7 +273,7 @@ These supply additional checks, especially for concepts with orthogonal validati
 | 2 | H&E encoders | Wrappers for all image encoders; patch extraction at fixed µm/px; embedding cache |
 | 3 | RNA encoders | Wrappers for expression encoders; preprocessing and tokenisation harmonised and documented |
 | 4 | Protein encoders | Wrappers for KRONOS and others; marker-panel mapping; cell and pseudospot embeddings |
-| 5 | Evaluation & fusion | Probe library, fusion strategies, Aim 1 integration metrics (including PID), controls, results dashboard |
+| 5 | Evaluation & fusion | Probe library, fusion strategies and integration-method wrappers, Aim 1 integration metrics (including PID), controls, results dashboard |
 
 Shared: encoder inventory (weights, licence, pretraining corpus, input requirements), documentation, write-up.
 
@@ -227,6 +283,7 @@ Aim 2 (interpretability: known-biology ledger, SAEs, LEACE erasure, steering) is
 ## 6. Open questions for the Virtual Tissue team
 
 1. Do we include integration methods (COSIE, StabMap) or only pretrained encoders plus simple fusion?
+   - **Proposed answer: include them**, as fusion operators applied on top of fixed encoder outputs, with the tiered scope in §4.1 (vi). Rationale in §4.1 (vi).
 2. Solidifying contributor assignments
 3. Which probe(s) are primary for the latent space surgery in Aim 2?
 
@@ -248,7 +305,7 @@ Aim 2 (interpretability: known-biology ledger, SAEs, LEACE erasure, steering) is
 - Wu E. et al. ROSIE: AI generation of multiplex immunofluorescence staining from histopathology images. bioRxiv 2024. [10.1101/2024.11.10.622859](https://doi.org/10.1101/2024.11.10.622859)
 - Valanarasu J.M.J. et al. Multimodal AI generates virtual population for tumor microenvironment modeling (GigaTIME). Cell 2026. [10.1016/j.cell.2025.11.016](https://doi.org/10.1016/j.cell.2025.11.016)
 - Balezo G. et al. MIPHEI-ViT: Multiplex Immunofluorescence Prediction from H&E Images using ViT Foundation Models. Comput Biol Med 2026. [10.1016/j.compbiomed.2026.111564](https://doi.org/10.1016/j.compbiomed.2026.111564)
-- SpaMosaic — mosaic integration of spatial multi-omics; compared against in COSIE. *(full citation to add)*
+- Mosaic integration of spatial multi-omics with SpaMosaic. Nat Genet 58, 1126–1137 (2026). [10.1038/s41588-026-02573-3](https://doi.org/10.1038/s41588-026-02573-3)
 - Liang P.P. et al. Quantifying & Modeling Multimodal Interactions: An Information Decomposition Framework. NeurIPS 2023. [arXiv:2302.12247](https://arxiv.org/abs/2302.12247)
 - Belrose N. et al. LEACE: Perfect Linear Concept Erasure in Closed Form. NeurIPS 2023. [arXiv:2306.03819](https://arxiv.org/abs/2306.03819); code: [EleutherAI/concept-erasure](https://github.com/EleutherAI/concept-erasure)
 - Le N.M. et al. Learning biologically relevant features in a pathology foundation model using sparse autoencoders. NeurIPS 2024 Workshop (AIM-FM). [arXiv:2407.10785](https://doi.org/10.48550/arXiv.2407.10785)
@@ -260,3 +317,39 @@ Aim 2 (interpretability: known-biology ledger, SAEs, LEACE erasure, steering) is
 - Ren P.-F. et al. Systematic benchmarking of high-throughput subcellular spatial transcriptomics platforms across human tumors. Nat Commun 2025. [10.1038/s41467-025-64292-3](https://doi.org/10.1038/s41467-025-64292-3)
 - Harmonised benchmarking of foundation models for single-cell and spatial transcriptomics. [arXiv:2607.17227](https://arxiv.org/abs/2607.17227)
 - Li M. et al. PHARAOH: Cross-Modality Alignment of Spatial Transcriptomics, Multiplexed Imaging, and Histology. Research Square 2026. [10.21203/rs.3.rs-9954002/v1](https://doi.org/10.21203/rs.3.rs-9954002/v1)
+
+**Added in this revision**
+
+*Datasets and related benchmarks*
+- von Querfurth B., Wenckstern J. et al. spora: A Unified Multimodal Dataset and Platform for Spatial Proteomics. NeurIPS 2026 (E&D Track). [arXiv:2610.24002](https://arxiv.org/abs/2610.24002); docs: [spora.epfl.ch/docs](https://spora.epfl.ch/docs/); bench: [bunnelab/spora-bench](https://github.com/bunnelab/spora-bench)
+- An open multimodal spatial resource integrating same-tissue transcriptomics, proteomics, and histology (UnumLocalia). bioRxiv 2026. [10.64898/2026.08.17.742355](https://doi.org/10.64898/2026.08.17.742355); data: [Zenodo 21713660](https://zenodo.org/records/21713660)
+- 10x Genomics. Visium CytAssist Gene and Protein Expression datasets (human tonsil, breast cancer; CC BY 4.0). [10xgenomics.com/datasets](https://www.10xgenomics.com/datasets/gene-protein-expression-library-of-human-tonsil-cytassist-ffpe-2-standard)
+- 10x Genomics. Xenium In Situ Gene and Protein Expression, FFPE human renal cell carcinoma (CC BY 4.0). [10xgenomics.com/datasets](https://www.10xgenomics.com/datasets/xenium-protein-ffpe-human-renal-carcinoma)
+- Liu T. et al. Leveraging multi-modal foundation models for analysing spatial multi-omic and histopathology data (spEMO). Nat Biomed Eng 2026. [10.1038/s41551-025-01602-6](https://doi.org/10.1038/s41551-025-01602-6)
+- SpaMBench: Spatial Multi-omics Benchmark. [Oyl-CityU/SpaMBench](https://github.com/Oyl-CityU/SpaMBench); data: [10.5281/zenodo.23655056](https://doi.org/10.5281/zenodo.23655056)
+- Liu C. et al. Multitask benchmarking of single-cell multimodal omics integration methods. Nat Methods 2025. [10.1038/s41592-025-02856-3](https://doi.org/10.1038/s41592-025-02856-3)
+
+*Encoders and integration methods*
+- Towards Spatial Transcriptomics-driven Pathology Foundation Models (SEAL). [arXiv:2602.14177](https://arxiv.org/abs/2602.14177)
+- H2O: A Foundation Model Bridging Histopathology to Spatial Multi-Omics Profiling. bioRxiv 2026. [10.64898/2026.04.21.717342](https://doi.org/10.64898/2026.04.21.717342)
+- A Multimodal Foundation Model of Spatial Transcriptomics and Histology for Biological Discovery and Clinical Prediction (STORM). [arXiv:2604.03630](https://arxiv.org/abs/2604.03630)
+- HistoPlexer, astir, MAPS: as wrapped in spora [bench] model zoo *(full citations to add)*
+- Long Y. et al. Deciphering spatial domains from spatial multi-omics with SpatialGlue. Nat Methods 2024. [10.1038/s41592-024-02316-4](https://doi.org/10.1038/s41592-024-02316-4)
+- Coleman K. et al. MISO. Nat Methods 2025. Code: [kpcoleman/miso](https://github.com/kpcoleman/miso) *(DOI to add)*
+- Interpretable spatial multi-omics data integration and dimensionality reduction with SpaMV. Nat Commun 2026. [10.1038/s41467-026-74718-1](https://doi.org/10.1038/s41467-026-74718-1)
+- Gayoso A. et al. Joint probabilistic modeling of single-cell multi-omic data with totalVI. Nat Methods 2021. [10.1038/s41592-020-01050-x](https://doi.org/10.1038/s41592-020-01050-x)
+- Argelaguet R. et al. MOFA+: a statistical framework for comprehensive integration of multi-modal single-cell data. Genome Biol 2020. [10.1186/s13059-020-02015-1](https://doi.org/10.1186/s13059-020-02015-1)
+- Hao Y. et al. Integrated analysis of multimodal single-cell data (Seurat WNN). Cell 2021. [10.1016/j.cell.2021.04.048](https://doi.org/10.1016/j.cell.2021.04.048)
+- Chen S., Zhu B. et al. Integration of spatial and single-cell data across modalities with weakly linked features (MaxFuse). Nat Biotechnol 2023. [10.1038/s41587-023-01935-0](https://doi.org/10.1038/s41587-023-01935-0)
+- Xiao Y. et al. GROVER: Graph-guided Representation of Omics and Vision with Expert Regulation for Adaptive Spatial Multi-omics Fusion. AAAI 2026. [arXiv:2511.11730](https://arxiv.org/abs/2511.11730)
+- SpaMode: A Broadly Applicable Framework for Deciphering Spatial Multi-Omics Using Multimodal Mixture of Disentangled Experts. Adv Sci 2026. [10.1002/advs.75478](https://doi.org/10.1002/advs.75478)
+
+*Integration-quality metrics*
+- Kornblith S. et al. Similarity of Neural Network Representations Revisited (CKA). ICML 2019. [arXiv:1905.00414](https://arxiv.org/abs/1905.00414)
+- Huh M. et al. The Platonic Representation Hypothesis (mutual-kNN alignment). ICML 2024. [arXiv:2405.07987](https://arxiv.org/abs/2405.07987)
+- Liu J., Huang Y., Singh R., Vert J.-P., Noble W.S. Jointly embedding multiple single-cell omics measurements (FOSCTTM). WABI 2019.
+- Gat I., Schwartz I., Schwing A. Perceptual Score: What Data Modalities Does Your Model Perceive? NeurIPS 2021. [arXiv:2110.14375](https://arxiv.org/abs/2110.14375)
+- Lightweight Sample-wise Multimodal Interaction estimator (LSMI). ICML 2025. [arXiv:2506.17248](https://arxiv.org/abs/2506.17248)
+- Tjandrasuwita M. et al. Understanding the Emergence of Multimodal Representation Alignment. [arXiv:2502.16282](https://arxiv.org/abs/2502.16282)
+- To Align or Not to Align: Strategic Multimodal Representation Alignment for Optimal Performance. [arXiv:2511.12121](https://arxiv.org/abs/2511.12121)
+- LatentVerse: A Framework for Understanding Shared and Modality-Specific Information in Multimodal Latent Representations. [arXiv:2609.12364](https://arxiv.org/abs/2609.12364)
