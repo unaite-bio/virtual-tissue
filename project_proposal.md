@@ -90,10 +90,10 @@ Both are cases where a model that simply aligns modalities could look good while
 - **Processing becomes part of the project.** Segmentation, registration and QC for the unprocessed samples fall to us. These choices must be standardised and documented, because they affect every downstream encoder.
 - **Unprocessed data is good for the held-out premise.** It makes prior use in any model's training less likely, though the Enable Medicine question still applies to any samples already processed on that platform.
 - **A cancer vs precancer axis is a new biological dimension.** Whether PD-L1 discordance and spatially dispersed immune populations differ between precancerous lesions and cancer extends Q1 and Q2 naturally. With 6 samples this is descriptive, not a statistical comparison.
-- **If the panel is 6-plex**, the Q1 discordance atlas shrinks to at most 6 markers, and Q2 is only feasible if the panel includes markers for Tregs (e.g. FOXP3, CD4) and B cells (e.g. CD20). Protein foundation encoders also need overlap with their pretraining marker vocabularies. The panel composition must be checked before the design is frozen.
+- **The panel is 6-plex** (Cécile's reply above), so on these samples the Q1 discordance atlas covers at most 6 markers, and Q2 is only feasible if the panel includes markers for Tregs (e.g. FOXP3, CD4) and B cells (e.g. CD20). Protein foundation encoders also need overlap with their pretraining marker vocabularies. The six markers are not yet known, so §4.4 runs the multi-marker atlas on public data and the design does not depend on the panel list.
 **Why it suits our premise**
 - True same-section alignment of all three modalities, plus a matched adjacent-section control.
-- **Held-out status differs by modality.** The preprint's Visium data has been openly available on Zenodo since December 2024, so models released after that date could in principle have seen it; we must check public training corpora (e.g. HEST-1k sample lists) for these sample IDs. The PhenoCycler data does not appear in that record, and the remaining samples from the 6-sample cohort appear unreleased. The strongest held-out claims therefore attach to the protein modality and to the unreleased samples.
+- **Held-out status differs by modality.** The preprint's Visium data has been openly available on Zenodo since December 2024, so models released after that date could in principle have seen it. Checked 3 Nov 2026: these samples are in no HEST version (the public file listing names all 1,276 samples) and not in STimage-1K4M (§3.3). The PhenoCycler data does not appear in that record, and the remaining samples from the 6-sample cohort appear unreleased. The strongest held-out claims therefore attach to the protein modality and to the unreleased samples.
 - The preprint documents biology we can use as tasks: RNA–protein discordance for PD-L1; Tregs and B cells described as resolved by PhenoCycler but rarely dominant in Visium spots; three malignant states. These observations are qualitative in the paper and will be quantified first.
 
 **Known limitations**
@@ -101,19 +101,58 @@ Both are cases where a model that simply aligns modalities could look good while
 - The triple-assayed section shows a higher mitochondrial fraction, and only ~75% of top HVGs overlap with the ST-only section. This is an assay-induced shift.
 - H&E is done after PhenoCycler cycling and may differ from routine H&E.
 - HNSCC is represented in TCGA, which some pathology encoders were pretrained on. The patients are unseen; the tissue type may not be.
-- **Possible Enable Medicine overlap (must resolve before data freeze).** The Badoual PhenoCycler data was processed on the Enable Medicine platform. Eva was co-developed by Enable Medicine and its training set includes PhenoCycler data from Enable's platform, plus unspecified "additional multiplexed images". We need written confirmation that the Badoual slides were not in Eva's training data. Separately, Eva's training data includes a head-and-neck cancer PhenoCycler cohort (UPMC-HNC, 43 markers), so Eva has seen this tissue type even if not these patients.
-- **Possible spora overlap (check before data freeze).** spora includes head-and-neck multiplex cohorts. We should confirm none of them contains the Badoual or UPMC-HNC samples, and treat every spora cohort as potentially seen by VirTues (same group), KRONOS and Eva when interpreting protein-encoder results.
+- **Possible Enable Medicine overlap (must resolve before data freeze).** The Badoual PhenoCycler data was processed on the Enable Medicine platform. Eva was co-developed by Enable Medicine and its training set includes PhenoCycler data from Enable's platform, plus unspecified "additional multiplexed images". We need written confirmation that the Badoual slides were not in Eva's training data. Separately, Eva's training data includes a head-and-neck cancer PhenoCycler cohort (UPMC-HNC, 43 markers), so Eva has seen this tissue type even if not these patients. ROSIE, also from Enable Medicine, lists 16 anonymised training studies, none of them head and neck; the same request should cover ROSIE.
+- **Possible spora overlap (check before data freeze).** spora includes head-and-neck multiplex cohorts. We should confirm none of them contains the Badoual or UPMC-HNC samples. Exposure differs by encoder (checked 3 Nov 2026, §3.3): the released VirTues-sp32 was trained on 32 named cohorts, and its CODEX cohorts do not include the spora head-and-neck cohort Haist 2026, though VirTues has seen head-and-neck tissue through other cohorts (IMMUcan, Hu 2023, Lin 2023); KRONOS was released before Haist; Eva's full training list is not disclosed. So treat spora cohorts as potentially seen by Eva, and check VirTues and KRONOS against their published lists rather than assuming.
 
 ### 3.2 Supporting public data (for probe training and external comparison only)
 
 - **HEST-1k**: paired H&E + ST, including Visium.
-- **COSIE periodontal dataset**: H&E + Visium HD (section 1), PhenoCycler/CODEX + Visium HD (section 2).
+- **COSIE periodontal dataset**: H&E + Visium HD (section 1), PhenoCycler/CODEX + Visium HD (section 2). *No public download found (checked 2 Nov 2026): the COSIE tutorials load local files and we found no data availability statement. Confirm or remove.*
 - **SPATCH (Ren et al., 2025)**: Visium HD and other ST platforms with adjacent CODEX and annotated H&E.
 - **spora (EPFL; [docs](https://spora.epfl.ch/docs/), [data](https://spora.bioimagearchive.org/))**: 13,546 standardised multiplex images from 5,477 patients, 35 cohorts, 14 tissue origins and 5 technologies (including CODEX), with paired H&E for ~31% of tiles, cell and tissue masks, cell types and marker-to-UniProt mapping. Uses for us: (a) large corpus for training protein- and H&E-side probes and SAEs; (b) `spora-io` marker harmonisation to map our PhenoCycler panel onto KRONOS/VirTues vocabularies; (c) `spora [bench]` task definitions (cell phenotyping, H&E→protein virtual staining) as a reference protocol so our protein-encoder numbers are comparable to theirs. Caveats: no transcriptomics; access is by credentials on request; `spora [bench]` code is CC BY-NC-ND 4.0 (we can run it but not redistribute modified versions, so our harness should reimplement any protocol we adapt); dataset licences vary per cohort.
-- **10x Visium CytAssist Gene and Protein Expression (CC BY 4.0)**: same-spot whole-transcriptome RNA + ~35-antibody immune panel (sequencing-based ADT) + H&E on the same section, for tonsil, breast cancer and lymph node. This is the closest public analogue of our Q1 setting (RNA vs protein at the same Visium spot) and lets us replicate the discordance atlas in other tissues. Note: the human lymph node sections were used to develop SpatialGlue and several later integration methods, so they are not held out for those methods.
-- **10x Xenium Protein (CC BY 4.0)**: same-cell RNA (~400 genes) + up to 27 proteins + post-Xenium H&E (e.g. renal cell carcinoma). Gives a single-cell, same-section tri-modal check for cell-level tasks (Q2 test 3).
+- **10x Visium CytAssist Gene and Protein Expression (CC BY 4.0)**: same-spot whole-transcriptome RNA + a 35-antibody immune panel (sequencing-based ADT: 31 targets + 4 isotype controls, the same in every dataset; includes PD-L1, CD4, CD8 and CD20, but not FOXP3). H&E is on the same section for **tonsil only** (there is also a tonsil set with extra antibodies: ICOS, STING, CD49b, MICA); the breast cancer and glioblastoma sets come with an immunofluorescence image instead. This is the closest public analogue of our Q1 setting (PD-L1 protein vs *CD274* RNA at the same Visium spot) and lets us replicate the discordance atlas in other tissues; without FOXP3 it cannot support the Treg part of Q2. Note: the lymph node sections often listed with these are not a 10x release. They are the SpatialGlue authors' own CytAssist data (2 lymph node + 2 tonsil sections, 31 proteins; GEO GSE263617; H&E only as downsampled images; licence not stated), used to develop SpatialGlue and several later integration methods, so they are not held out for those methods.
+- **10x Xenium Protein (CC BY 4.0)**: same-cell RNA + 27 proteins + H&E on the same section, in two datasets: renal cell carcinoma (405 genes, post-Xenium H&E, released July 2025) and clear cell renal cell carcinoma (477 genes, aligned H&E, June 2026). The protein panel includes PD-L1, PD-1, LAG-3, CD4, CD8 and CD20, but not FOXP3. Gives a single-cell, same-section tri-modal check for cell-level tasks (Q2 test 3) for B cells; Tregs cannot be labelled from this panel.
 - **UnumLocalia (bioRxiv 2026; Zenodo 21713660)**: Xenium 5k + COMET 16-plex protein + H&E on the same FFPE section, four TMA cores (HCC, non-tumour liver, tonsil, hepatocellular adenoma), with alignment matrices and per-cell RNA + protein quantifications. Small, but independently generated same-section tri-modal data released after most current encoders.
+- **Haist et al. 2026 (Cancer Cell; independent HNSCC)**: 78 HNSCC patients on 3 TMAs (390 cores, primary tumours and lymph nodes). 53-plex CODEX with H&E on the same section after imaging; the panel includes PD-L1, FOXP3, CD4, CD8 and CD20. A 98-gene RNA imaging panel on adjacent sections of one TMA (not Visium; no *CD274* or *FOXP3*; 23 protein–gene pairs are measured on both layers). Images CC0 ([BioImage Archive S-BIAD1638](https://doi.org/10.6019/S-BIAD1638), ~0.61 TB); cell tables CC BY 4.0 ([Mendeley](https://doi.org/10.17632/t4k5kj3cxr.1)). A spora cohort, but held out for KRONOS and VirTues-sp32 (§3.3). The largest open, independent HNSCC set with same-section protein and H&E.
+- **Causer et al. 2023 (npj Precis Oncol)**: HPV+ oropharyngeal SCC with Visium + H&E (same section) and 11-plex PhenoCycler (adjacent section) for one tumour; the panel lacks PD-L1 and FOXP3. Data on [UQ eSpace](https://doi.org/10.48610/698bb9e); file list not yet read.
+- **Jenkins et al. 2025 (Mol Cancer)**: Visium CytAssist for 10 HNSCC (7 HPV+), open on [Zenodo](https://doi.org/10.5281/zenodo.14284038) (CC BY 4.0); PhenoCycler-Fusion on the same patients is available on request. Markovits et al. 2025 (37-plex PhenoCycler-Fusion with same-slide H&E, 16 HNSCC, on request) may share patients.
+- **Simkin et al. 2026 (Nat Genet; GEO GSE268014)**: HNSCC Visium (fresh frozen) and Visium HD (FFPE), 26 tumours, HPV+ and HPV−. RNA only; a candidate Visium partner for Haist protein. Released after every encoder in §4.1.
+- **IN-DEPTH (Yiu et al. 2026, Cancer Discov)**: CODEX + CosMx or GeoMx + H&E on the same slide, diffuse large B-cell lymphoma and tonsil; open on [Zenodo](https://doi.org/10.5281/zenodo.14639480) (CC BY 4.0, ~86 GB in two records). Not head and neck; it is COSIE's tutorial 10 and possibly seen by KRONOS (§3.3).
+
 **Rule:** public data may be used to fit probes or heads. All headline results should be reported on the Badoual dataset.
+
+**Combining sources.** When two modalities come from different studies, they come from different patients, so there are no true matches: FOSCTTM and any metric that needs a known match cannot be computed, and only distribution-level comparisons (e.g. Wasserstein distance, MMD) and within-dataset probes apply. When pairing sources, match fixation first (FFPE vs fresh frozen is the largest avoidable batch effect), then subsite and HPV status, then panel overlap.
+
+### 3.3 Held-out status of candidate datasets (checked 3 Nov 2026)
+
+We compared each dataset's release date with each encoder's release, and checked membership in the published training lists: HEST (all versions, via the [public file listing](https://huggingface.co/api/datasets/MahmoodLab/hest)), STimage-1K4M, the scGPT-spatial source table, Novae's training files, and the dataset tables of Phikon-v2, SEAL, H2O, KRONOS, VirTues-sp32, Eva and ROSIE.
+
+Key: **N** released after the encoder, or checked against its list and not found; **Y** in its training data; **?** possible (see notes); **n/c** not checkable; **n/a** modality not public.
+
+| Dataset (public since) | H&E FMs ¹ | SEAL, H2O | STORM | RNA FMs ² | KRONOS | VirTues-sp32 | Eva | Translators ³ |
+|---|---|---|---|---|---|---|---|---|
+| Badoual Visium (Dec 2024) | N | N | n/c | N | N | N | ? ᵃ | N |
+| Haist (Jan 2026) | N | N | N | N | N | N | n/c | N |
+| Causer (2023) | N | N | n/c | N | N | N | n/c | N |
+| Jenkins (Dec 2024) | N | N | n/c | N | n/a | n/a | n/a | n/a |
+| SPATCH (May 2025) | N | N | n/c ᵇ | N | N | N | n/c | N |
+| IN-DEPTH (Jan 2025) | N | N | n/c | N | ? ᶜ | N | n/c | N |
+| UnumLocalia (Jul 2026) | N | N | N | N | N | N | N | N |
+| 10x Gene and Protein (2023) | N | N | ? ᵈ | N | n/a | n/a | n/a | n/a |
+| 10x Xenium Protein RCC (Jul 2025) | N | N | n/c | N | N | N | n/c | N |
+| UPMC-HNC (Aug 2024, tables only) | n/a | n/a | n/a | n/a | N | N | **Y** ᵉ | N |
+| Simkin (Jun 2026) | N | N | N | N | n/a | n/a | n/a | n/a |
+
+¹ UNI/UNI2, CONCH, Phikon/Phikon-v2, CTransPath (public corpora checked or older than the data). Virchow2, H-Optimus-0/1 and Prov-GigaPath describe internal clinical archives and cannot be checked; public research sets are unlikely to be in them. The tissue type is still seen: TCGA head-and-neck slides are in Phikon, Phikon-v2 and CTransPath.
+² scGPT, Geneformer, UCE, CellPLM, Nicheformer, scGPT-spatial, Novae.
+³ ROSIE, GigaTIME, MIPHEI-ViT, HistoPlexer.
+ᵃ The Badoual PhenoCycler data was processed on Enable Medicine, and Eva also used undisclosed "additional multiplexed images" (§3.1). Eva's checkpoint was re-uploaded on 19 Aug 2026 with no changelog.
+ᵇ SPATCH is STORM's own evaluation set. STORM lists only example training sections and has no public weights.
+ᶜ KRONOS pretrained on private BIDMC CODEX lymph node and tonsil data, and one of its corresponding authors (Sizun Jiang) leads IN-DEPTH. IN-DEPTH is also COSIE's tutorial 10.
+ᵈ STORM's data statement names lymphoid tissues from the 10x portal. Separately, the [COSIE-Foundation](https://huggingface.co/pennweili/cosie-foundation) checkpoint contains the 10x 35-antibody panel, so these sets are not held out for it.
+ᵉ 327 UPMC-HNC regions were used in Eva's training (Eva v2 Methods).
+
+**Still open:** which Xenium samples HEST v1.3 added (its metadata is behind the HEST terms on Hugging Face); Eva's region-level pretraining list, to request from Enable Medicine together with ROSIE; whether the IN-DEPTH CODEX images are in KRONOS's private pretraining data; COSIE-Foundation's training sections; STORM's full sample list and weights.
 
 ---
 
@@ -123,14 +162,14 @@ Both are cases where a model that simply aligns modalities could look good while
 
 **(i) H&E image encoders** (initial candidates, to confirm in the inventory)
 - Pathology foundation models: UNI / UNI2, CONCH, Virchow2, H-Optimus-0/1, Phikon / Phikon-v2, Prov-GigaPath, CTransPath
-- Molecularly aligned pathology encoders (pathology FMs fine-tuned or pretrained with paired ST, sometimes protein): SEAL, H2O, STORM. Most were trained on HEST-1k, so check sample lists against the Badoual Visium release.
+- Molecularly aligned pathology encoders (pathology FMs fine-tuned or pretrained with paired ST, sometimes protein): SEAL, H2O, STORM. Most were trained on HEST-1k; the Badoual Visium release is in no HEST version (§3.3). STORM has no public weights and lists only example training sections, so it can only be included if that changes.
 - Baselines: ImageNet ResNet50, handcrafted morphology features
 **(ii) Visium RNA encoders**
 - Baselines: log-normalised HVGs, PCA
 - Foundation models: scGPT, Geneformer, UCE, CellPLM, Nicheformer, scGPT-spatial, Novae
 **(iii) PhenoCycler protein encoders**
 - Baselines: mean marker intensity per cell or pseudospot, PCA; cell-typing baselines used in spora [bench] (astir, MAPS)
-- Foundation models: KRONOS (public weights; accepts only markers it was pretrained on, so panel coverage must be checked), VirTues (public weights; IMC-trained, uses ESM protein embeddings)
+- Foundation models: KRONOS (public weights; accepts only markers it was pretrained on, so panel coverage must be checked), VirTues (public weights; the released VirTues-sp32 is trained on 32 spatial proteomics datasets, including CODEX cohorts ([Nature 2026](https://www.nature.com/articles/s41586-026-10884-y)); uses ESM protein embeddings, so it accepts any marker panel at inference)
 **(iv) Joint H&E + protein encoders**
 - Eva (H&E fed as extra channels alongside MIF; public weights not confirmed in the preprint text, so check availability)
 **(v) H&E → protein translators (as cross-modal baselines)**
@@ -204,7 +243,7 @@ Both are cases where a model that simply aligns modalities could look good while
 
 *Ground truth.* PhenoCycler marker intensity aggregated to Visium pseudospots (same section), paired with the matched gene's Visium expression.
 
-*Extension beyond PD-L1.* Most of the ~33 PhenoCycler markers have an RNA counterpart (e.g. PD-L1/*CD274*, PD1/*PDCD1*, LAG3, FOXP3, CD8, CD20/*MS4A1*, Ki67/*MKI67*, podoplanin/*PDPN*, TCF-1/*TCF7*, CD14). Computing per-marker RNA–protein concordance turns one observation into a **discordance atlas** for the dataset. The concordant markers named in the paper serve as positive controls.
+*Extension beyond PD-L1.* Most markers on the preprint's ~33-marker PhenoCycler panel have an RNA counterpart (e.g. PD-L1/*CD274*, PD1/*PDCD1*, LAG3, FOXP3, CD8, CD20/*MS4A1*, Ki67/*MKI67*, podoplanin/*PDPN*, TCF-1/*TCF7*, CD14). Cécile's six samples are 6-plex (§3.1), so on them the atlas covers at most six markers. The multi-marker version therefore runs on public data: Haist 2026 measures 23 protein–gene pairs on adjacent sections of the same cores, and the 10x tonsil Gene and Protein set measures PD-L1 protein and *CD274* RNA at the same spot (§3.2). Computing per-marker RNA–protein concordance turns one observation into a **discordance atlas**. The concordant markers named in the paper serve as positive controls.
 
 *Tests*
 1. **Recovery.** Predict protein (per marker, per pseudospot) from the RNA latent, the H&E latent and each joint latent. The key comparison is performance on **discordant** markers vs concordant ones. Does adding H&E or integration rescue PD-L1 where RNA alone fails?
@@ -336,6 +375,7 @@ Aim 2 (interpretability: known-biology ledger, SAEs, LEACE erasure, steering) is
 - HistoPlexer, astir, MAPS: as wrapped in spora [bench] model zoo *(full citations to add)*
 - Long Y. et al. Deciphering spatial domains from spatial multi-omics with SpatialGlue. Nat Methods 2024. [10.1038/s41592-024-02316-4](https://doi.org/10.1038/s41592-024-02316-4)
 - Coleman K. et al. MISO. Nat Methods 2025. Code: [kpcoleman/miso](https://github.com/kpcoleman/miso) *(DOI to add)*
+- Wenckstern J., Jain E. et al. The Virtual Tissues foundation model resolves spatial proteomics across scales (VirTues-sp32). Nature 2026. [s41586-026-10884-y](https://www.nature.com/articles/s41586-026-10884-y); weights: [bunnelab/virtues](https://huggingface.co/bunnelab/virtues)
 - Interpretable spatial multi-omics data integration and dimensionality reduction with SpaMV. Nat Commun 2026. [10.1038/s41467-026-74718-1](https://doi.org/10.1038/s41467-026-74718-1)
 - Gayoso A. et al. Joint probabilistic modeling of single-cell multi-omic data with totalVI. Nat Methods 2021. [10.1038/s41592-020-01050-x](https://doi.org/10.1038/s41592-020-01050-x)
 - Argelaguet R. et al. MOFA+: a statistical framework for comprehensive integration of multi-modal single-cell data. Genome Biol 2020. [10.1186/s13059-020-02015-1](https://doi.org/10.1186/s13059-020-02015-1)
@@ -353,3 +393,13 @@ Aim 2 (interpretability: known-biology ledger, SAEs, LEACE erasure, steering) is
 - Tjandrasuwita M. et al. Understanding the Emergence of Multimodal Representation Alignment. [arXiv:2502.16282](https://arxiv.org/abs/2502.16282)
 - To Align or Not to Align: Strategic Multimodal Representation Alignment for Optimal Performance. [arXiv:2511.12121](https://arxiv.org/abs/2511.12121)
 - LatentVerse: A Framework for Understanding Shared and Modality-Specific Information in Multimodal Latent Representations. [arXiv:2609.12364](https://arxiv.org/abs/2609.12364)
+
+**Added 4 Nov 2026 (public data checks)**
+- Haist M. et al. Lymph node colonization induces tissue remodeling via immunosuppressive fibroblast-myeloid cell niches supporting metastatic tolerance. Cancer Cell 2026. [10.1016/j.ccell.2026.01.003](https://doi.org/10.1016/j.ccell.2026.01.003); images: [S-BIAD1638](https://doi.org/10.6019/S-BIAD1638); tables: [Mendeley](https://doi.org/10.17632/t4k5kj3cxr.1)
+- Causer A. et al. Deep spatial-omics analysis of Head & Neck carcinomas provides alternative therapeutic targets and rationale for treatment failure. npj Precis Oncol 2023. [10.1038/s41698-023-00444-2](https://doi.org/10.1038/s41698-023-00444-2); data: [UQ eSpace](https://doi.org/10.48610/698bb9e)
+- Jenkins B.H. et al. Single cell and spatial analysis of immune-hot and immune-cold tumours identifies fibroblast subtypes associated with distinct immunological niches and positive immunotherapy response. Mol Cancer 2025. [10.1186/s12943-024-02191-9](https://doi.org/10.1186/s12943-024-02191-9); data: [Zenodo 14284038](https://doi.org/10.5281/zenodo.14284038)
+- Markovits et al. J Transl Med 2025. [10.1186/s12967-025-07280-x](https://doi.org/10.1186/s12967-025-07280-x)
+- Simkin et al. Nat Genet 2026. [10.1038/s41588-026-02723-7](https://doi.org/10.1038/s41588-026-02723-7); data: [GEO GSE268014](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE268014)
+- Yiu et al. IN-DEPTH. Cancer Discov 2026. [10.1158/2159-8290.CD-25-0775](https://doi.org/10.1158/2159-8290.CD-25-0775); data: [Zenodo 14639480](https://doi.org/10.5281/zenodo.14639480)
+- SpatialGlue lymph node and tonsil CytAssist Gene and Protein data. [GEO GSE263617](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE263617)
+- 10x Genomics. Xenium Protein, FFPE human clear cell renal cell carcinoma (CC BY 4.0). [10xgenomics.com/datasets](https://www.10xgenomics.com/datasets/xenium-protein-ffpe-human-renal-ccrcc)
