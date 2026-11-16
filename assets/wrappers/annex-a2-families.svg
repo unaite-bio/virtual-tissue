@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" width="1100" height="520" role="img" aria-labelledby="ttl desc">
+  <title id="ttl">Annex A2: Method families</title>
+  <desc id="desc">Five method families, what each takes in and gives out. Encoder: one modality in, embedding out. Joint encoder: two or three modalities in one pretrained model, embedding out. Fuser: embeddings of two or three modalities, or raw inputs, fused embedding out. Translator: a source modality in, predictions of a target modality out. Matcher: two unit sets in, a matching out.</desc>
+  <style>
+    text { fill: #171A43; font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; }
+    .h  { font-size: 17px; font-weight: 700; letter-spacing: 0.04em; }
+    .col{ font-size: 13px; font-weight: 700; letter-spacing: 0.06em; fill: #4B4F78; }
+    .t  { font-size: 14px; font-weight: 700; }
+    .t16{ font-size: 16px; font-weight: 700; }
+    .s  { font-size: 13px; }
+    .g  { font-size: 13px; fill: #4B4F78; }
+    .n  { font-size: 13px; fill: #5A5D82; }
+    .m  { font-size: 13px; font-weight: 500; font-family: Consolas, "Courier New", monospace; }
+    .mb { font-size: 13px; font-weight: 700; font-family: Consolas, "Courier New", monospace; }
+    .c  { text-anchor: middle; }
+    .e  { text-anchor: end; }
+  </style>
+  <rect width="1100" height="520" fill="#FFFFFF"/>
+
+  <text class="h" x="24" y="36">ANNEX A2: METHOD FAMILIES</text>
+  <text class="n e" x="1076" y="36">design draft, not implemented</text>
+  <text class="g" x="24" y="62">All families share the Method interface. They differ in what goes in and what comes out (card field output_type).</text>
+
+  <text class="col" x="24"  y="98">FAMILY</text>
+  <text class="col" x="236" y="98">TAKES IN</text>
+  <text class="col" x="556" y="98">GIVES OUT</text>
+  <text class="col" x="800" y="98">EXAMPLES FROM THE PLAN</text>
+  <line x1="24" y1="108" x2="1076" y2="108" stroke="#171A43" stroke-width="1.6"/>
+
+  <!-- Encoder -->
+  <text class="t16" x="24" y="144">Encoder</text>
+  <text class="g" x="24" y="164">one modality</text>
+  <rect x="236" y="130" width="52" height="30" rx="8" fill="#FBEFF5" stroke="#BA3F84" stroke-width="1.8"/><text class="t c" x="262" y="150">H&amp;E</text>
+  <rect x="296" y="130" width="52" height="30" rx="8" fill="#EFEEFF" stroke="#6E62FF" stroke-width="1.8"/><text class="t c" x="322" y="150">RNA</text>
+  <rect x="356" y="130" width="72" height="30" rx="8" fill="#E6F4F2" stroke="#159384" stroke-width="1.8"/><text class="t c" x="392" y="150">protein</text>
+  <text class="g" x="440" y="150">one of these</text>
+  <text class="mb" x="556" y="144">embedding</text>
+  <text class="g" x="556" y="164">values [n_units × d]</text>
+  <text class="s" x="800" y="140">H&amp;E: UNI2, Phikon-v2</text>
+  <text class="s" x="800" y="160">RNA: scGPT, PCA; protein: KRONOS</text>
+  <line x1="24" y1="184" x2="1076" y2="184" stroke="#D5D6EA" stroke-width="1.4"/>
+
+  <!-- Joint -->
+  <text class="t16" x="24" y="220">Joint encoder</text>
+  <text class="g" x="24" y="240">2–3 modalities, one model</text>
+  <rect x="236" y="206" width="52" height="30" rx="8" fill="#FBEFF5" stroke="#BA3F84" stroke-width="1.8"/><text class="t c" x="262" y="226">H&amp;E</text>
+  <text class="t" x="296" y="226">+</text>
+  <rect x="312" y="206" width="52" height="30" rx="8" fill="#EFEEFF" stroke="#6E62FF" stroke-width="1.8"/><text class="t c" x="338" y="226">RNA</text>
+  <text class="t" x="372" y="226">+</text>
+  <rect x="388" y="206" width="72" height="30" rx="8" fill="#E6F4F2" stroke="#159384" stroke-width="1.8"/><text class="t c" x="424" y="226">protein</text>
+  <text class="g" x="472" y="226">any 2 or 3</text>
+  <text class="mb" x="556" y="220">embedding</text>
+  <text class="g" x="556" y="240">one or more named latents</text>
+  <text class="s" x="800" y="216">Eva (H&amp;E + protein)</text>
+  <text class="g" x="800" y="236">one pretrained model</text>
+  <line x1="24" y1="260" x2="1076" y2="260" stroke="#D5D6EA" stroke-width="1.4"/>
+
+  <!-- Fuser -->
+  <text class="t16" x="24" y="296">Fuser</text>
+  <text class="g" x="24" y="316">combines 2–3 modalities</text>
+  <rect x="236" y="282" width="16" height="30" rx="3" fill="#FBEFF5" stroke="#BA3F84" stroke-width="1.8"/>
+  <rect x="258" y="282" width="16" height="30" rx="3" fill="#EFEEFF" stroke="#6E62FF" stroke-width="1.8"/>
+  <rect x="280" y="282" width="16" height="30" rx="3" fill="#E6F4F2" stroke="#159384" stroke-width="1.8"/>
+  <text class="s" x="306" y="302">their embeddings,</text>
+  <text class="g" x="306" y="320">or raw inputs (e.g. totalVI)</text>
+  <text class="mb" x="556" y="296">embedding</text>
+  <text class="g" x="556" y="316">fused, shared or private latents</text>
+  <text class="s" x="800" y="292">concatenation, late fusion,</text>
+  <text class="s" x="800" y="312">cross-attention, SpatialGlue</text>
+  <line x1="24" y1="336" x2="1076" y2="336" stroke="#D5D6EA" stroke-width="1.4"/>
+
+  <!-- Translator -->
+  <text class="t16" x="24" y="372">Translator</text>
+  <text class="g" x="24" y="392">source → target modality</text>
+  <rect x="236" y="358" width="52" height="30" rx="8" fill="#FBEFF5" stroke="#BA3F84" stroke-width="1.8"/><text class="t c" x="262" y="378">H&amp;E</text>
+  <text class="g" x="296" y="378">e.g. a source modality</text>
+  <text class="mb" x="556" y="372">prediction</text>
+  <text class="g" x="556" y="392">named columns, e.g. markers</text>
+  <text class="s" x="800" y="368">ROSIE, GigaTIME, MIPHEI-ViT</text>
+  <text class="g" x="800" y="388">(H&amp;E → protein)</text>
+  <line x1="24" y1="412" x2="1076" y2="412" stroke="#D5D6EA" stroke-width="1.4"/>
+
+  <!-- Matcher -->
+  <text class="t16" x="24" y="448">Matcher</text>
+  <text class="g" x="24" y="468">two sets of units</text>
+  <rect x="236" y="434" width="64" height="30" rx="8" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.8"/><text class="t c" x="268" y="454">cells</text>
+  <text class="t" x="310" y="454">↔</text>
+  <rect x="332" y="434" width="64" height="30" rx="8" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.8"/><text class="t c" x="364" y="454">spots</text>
+  <text class="mb" x="556" y="448">matching</text>
+  <text class="g" x="556" y="468">links between unit_ids</text>
+  <text class="s" x="800" y="444">MaxFuse</text>
+  <text class="g" x="800" y="464">(PhenoCycler cells ↔ Visium spots)</text>
+  <line x1="24" y1="488" x2="1076" y2="488" stroke="#171A43" stroke-width="1.6"/>
+</svg>

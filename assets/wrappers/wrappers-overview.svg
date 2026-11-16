@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" width="1100" height="520" role="img" aria-labelledby="ttl desc">
+  <title id="ttl">Wrapper architecture</title>
+  <desc id="desc">Left to right: H&amp;E, Visium and PhenoCycler data at three possible units (spot, pseudospot, cell) are harmonised per modality and checked; method wrappers (encoders, a fuser, translators and matchers, each with a method card and a fit mode) run in per-method environment groups; they write an Embedding file, a run record and the method card; a separate evaluation layer reads those files and cards only.</desc>
+  <style>
+    text { fill: #171A43; font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; }
+    .h  { font-size: 17px; font-weight: 700; letter-spacing: 0.04em; }
+    .col{ font-size: 13px; font-weight: 700; letter-spacing: 0.06em; fill: #4B4F78; }
+    .t  { font-size: 14px; font-weight: 700; }
+    .t16{ font-size: 16px; font-weight: 700; }
+    .s  { font-size: 13px; font-weight: 400; }
+    .g  { font-size: 13px; font-weight: 400; fill: #4B4F78; }
+    .n  { font-size: 13px; font-weight: 400; fill: #5A5D82; }
+    .m  { font-size: 13px; font-weight: 500; font-family: Consolas, "Courier New", monospace; }
+    .mb { font-size: 13px; font-weight: 700; font-family: Consolas, "Courier New", monospace; }
+    .c  { text-anchor: middle; }
+    .e  { text-anchor: end; }
+  </style>
+  <defs>
+    <marker id="a-ink" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#171A43"/></marker>
+    <marker id="a-he"  viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#BA3F84"/></marker>
+    <marker id="a-vis" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#6E62FF"/></marker>
+    <marker id="a-phe" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#159384"/></marker>
+    <linearGradient id="g-joint" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FBEFF5"/><stop offset="0.3333" stop-color="#FBEFF5"/>
+      <stop offset="0.3333" stop-color="#EFEEFF"/><stop offset="0.6667" stop-color="#EFEEFF"/>
+      <stop offset="0.6667" stop-color="#E6F4F2"/><stop offset="1" stop-color="#E6F4F2"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1100" height="520" fill="#FFFFFF"/>
+
+  <!-- header -->
+  <text class="h" x="24" y="36">WRAPPER ARCHITECTURE</text>
+  <text class="n e" x="1076" y="36">design draft, not implemented</text>
+
+  <!-- column labels -->
+  <text class="col" x="24"  y="76">1  DATA</text>
+  <text class="col" x="224" y="76">2  HARMONISE</text>
+  <text class="col" x="424" y="76">3  WRAPPERS</text>
+  <text class="col" x="748" y="76">4  OUTPUT</text>
+  <text class="col" x="912" y="76">5  EVALUATION</text>
+
+  <!-- 1 DATA -->
+  <rect x="24" y="92"  width="172" height="68" rx="10" fill="#FFFFFF" stroke="#BA3F84" stroke-width="2.2"/>
+  <text class="t16" x="40" y="120">H&amp;E</text>
+  <text class="g"   x="40" y="142">morphology</text>
+
+  <rect x="24" y="176" width="172" height="68" rx="10" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2.2"/>
+  <text class="t16" x="40" y="204">Visium</text>
+  <text class="g"   x="40" y="226">transcriptome</text>
+
+  <rect x="24" y="260" width="172" height="68" rx="10" fill="#FFFFFF" stroke="#159384" stroke-width="2.2"/>
+  <text class="t16" x="40" y="288">PhenoCycler</text>
+  <text class="g"   x="40" y="310">single-cell protein</text>
+
+  <rect x="24" y="344" width="172" height="100" rx="10" fill="#F0EFFE" stroke="#B9B1FF" stroke-width="1.6"/>
+  <text class="t" x="40" y="368">Units</text>
+  <circle cx="46" cy="386" r="3" fill="#171A43"/><text class="s" x="58" y="391">spot</text>
+  <circle cx="46" cy="404" r="3" fill="#171A43"/><text class="s" x="58" y="409">pseudospot</text>
+  <circle cx="46" cy="422" r="3" fill="#171A43"/><text class="s" x="58" y="427">cell</text>
+
+  <!-- data -> harmonise -->
+  <line x1="196" y1="126" x2="222" y2="126" stroke="#BA3F84" stroke-width="2" marker-end="url(#a-he)"/>
+  <line x1="196" y1="210" x2="222" y2="210" stroke="#6E62FF" stroke-width="2" marker-end="url(#a-vis)"/>
+  <line x1="196" y1="294" x2="222" y2="294" stroke="#159384" stroke-width="2" marker-end="url(#a-phe)"/>
+
+  <!-- 2 HARMONISE -->
+  <rect x="224" y="92"  width="172" height="68" rx="10" fill="#FBEFF5" stroke="#BA3F84" stroke-width="1.8"/>
+  <text class="t" x="240" y="120">Patch spec</text>
+  <text class="s" x="240" y="140">fixed µm/px</text>
+
+  <rect x="224" y="176" width="172" height="68" rx="10" fill="#EFEEFF" stroke="#6E62FF" stroke-width="1.8"/>
+  <text class="t" x="240" y="204">Gene vocabulary</text>
+  <text class="s" x="240" y="224">raw counts layer</text>
+
+  <rect x="224" y="260" width="172" height="68" rx="10" fill="#E6F4F2" stroke="#159384" stroke-width="1.8"/>
+  <text class="t" x="240" y="282">Marker panel</text>
+  <text class="s" x="240" y="299">→ UniProt / HGNC</text>
+  <text class="s" x="240" y="316">→ method vocabulary</text>
+
+  <rect x="224" y="344" width="172" height="100" rx="10" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="mb" x="240" y="366">check_inputs</text>
+  <text class="s" x="240" y="385">refuses unsupported</text>
+  <text class="s" x="240" y="401">modality, unit or</text>
+  <text class="s" x="240" y="417">vocabulary; reports</text>
+  <text class="s" x="240" y="433">what it changed</text>
+
+  <!-- harmonise -> wrappers -->
+  <line x1="396" y1="126" x2="422" y2="126" stroke="#BA3F84" stroke-width="2" marker-end="url(#a-he)"/>
+  <line x1="396" y1="210" x2="422" y2="210" stroke="#6E62FF" stroke-width="2" marker-end="url(#a-vis)"/>
+  <line x1="396" y1="294" x2="422" y2="294" stroke="#159384" stroke-width="2" marker-end="url(#a-phe)"/>
+
+  <!-- 3 WRAPPERS -->
+  <rect x="424" y="92" width="296" height="352" rx="14" fill="#F7F6FF" stroke="#6E62FF" stroke-width="2" stroke-dasharray="7 5"/>
+
+  <rect x="440" y="108" width="264" height="44" rx="8" fill="#FFFFFF" stroke="#171A43" stroke-width="1.8"/>
+  <text class="t" x="452" y="128">Method + MethodCard</text>
+  <text class="s" x="452" y="145">load, check_inputs, transform</text>
+
+  <text class="t" x="440" y="176">Encoder</text>
+  <text class="g e" x="704" y="176">Joint: 2–3 modalities</text>
+  <rect x="440" y="184" width="52" height="32" rx="8" fill="#FBEFF5" stroke="#BA3F84" stroke-width="1.8"/>
+  <text class="t c" x="466" y="205">H&amp;E</text>
+  <rect x="500" y="184" width="52" height="32" rx="8" fill="#EFEEFF" stroke="#6E62FF" stroke-width="1.8"/>
+  <text class="t c" x="526" y="205">RNA</text>
+  <rect x="560" y="184" width="72" height="32" rx="8" fill="#E6F4F2" stroke="#159384" stroke-width="1.8"/>
+  <text class="t c" x="596" y="205">Protein</text>
+  <rect x="640" y="184" width="64" height="32" rx="8" fill="url(#g-joint)" stroke="#4B4F78" stroke-width="1.8"/>
+  <text class="t c" x="672" y="205">Joint</text>
+
+  <path d="M466,216 V228 M526,216 V228 M596,216 V228 M672,216 V228 M466,228 H672" fill="none" stroke="#171A43" stroke-width="1.6"/>
+  <line x1="572" y1="228" x2="572" y2="244" stroke="#171A43" stroke-width="1.6" marker-end="url(#a-ink)"/>
+
+  <rect x="440" y="246" width="264" height="44" rx="8" fill="#E9E7FF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="t" x="452" y="266">Fuser</text>
+  <text class="s" x="452" y="283">2–3 modalities → named latents</text>
+
+  <text class="t" x="440" y="312">Other families</text>
+  <rect x="440" y="320" width="128" height="44" rx="8" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.8"/>
+  <text class="t" x="452" y="339">Translator</text>
+  <text class="s" x="452" y="356">source → target</text>
+  <rect x="576" y="320" width="128" height="44" rx="8" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.8"/>
+  <text class="t" x="588" y="339">Matcher</text>
+  <text class="s" x="588" y="356">cell ↔ spot</text>
+
+  <text class="t" x="440" y="388">fit_mode</text>
+  <rect x="440" y="396" width="72"  height="30" rx="15" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6"/>
+  <text class="s c" x="476" y="416">frozen</text>
+  <rect x="520" y="396" width="72"  height="30" rx="15" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6"/>
+  <text class="s c" x="556" y="416">fitted</text>
+  <rect x="600" y="396" width="104" height="30" rx="15" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6"/>
+  <text class="s c" x="652" y="416">transductive</text>
+
+  <!-- wrappers -> output -->
+  <line x1="720" y1="182" x2="746" y2="182" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+
+  <!-- 4 OUTPUT -->
+  <rect x="748" y="92" width="136" height="176" rx="10" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="t" x="762" y="114">Embedding</text>
+  <text class="m" x="762" y="136">values</text>
+  <text class="m" x="762" y="153">unit_ids</text>
+  <text class="m" x="762" y="170">unit_type</text>
+  <text class="m" x="762" y="187">sample_id</text>
+  <text class="m" x="762" y="204">latent</text>
+  <text class="m" x="762" y="221">run key</text>
+  <text class="g" x="762" y="243">one file per</text>
+  <text class="g" x="762" y="259">(run, sample)</text>
+
+  <rect x="748" y="278" width="136" height="84" rx="10" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="mb" x="762" y="300">RUN.json</text>
+  <text class="s" x="762" y="319">env lock hash</text>
+  <text class="s" x="762" y="335">seed, hardware</text>
+  <text class="s" x="762" y="351">failed units</text>
+
+  <rect x="748" y="378" width="136" height="66" rx="10" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="t" x="762" y="398">MethodCard</text>
+  <text class="s" x="762" y="416">fit_mode, units,</text>
+  <text class="s" x="762" y="432">held-out status</text>
+
+  <!-- seam -->
+  <line x1="898" y1="84" x2="898" y2="452" stroke="#4B4F78" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="884" y1="177" x2="910" y2="177" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+  <line x1="884" y1="320" x2="910" y2="320" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+  <line x1="884" y1="411" x2="910" y2="411" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+  <text class="g c" x="898" y="472">files only</text>
+
+  <!-- 5 EVALUATION -->
+  <rect x="912" y="92" width="164" height="352" rx="12" fill="#FFFFFF" stroke="#171A43" stroke-width="2.4"/>
+  <text class="t16" x="928" y="118">Evaluation</text>
+  <text class="g"   x="928" y="137">separate layer</text>
+  <circle cx="934" cy="164" r="3" fill="#171A43"/><text class="s" x="946" y="169">splits</text>
+  <circle cx="934" cy="186" r="3" fill="#171A43"/><text class="s" x="946" y="191">PCA, train only</text>
+  <circle cx="934" cy="208" r="3" fill="#171A43"/><text class="s" x="946" y="213">probes</text>
+  <circle cx="934" cy="230" r="3" fill="#171A43"/><text class="s" x="946" y="235">patient bootstrap</text>
+  <circle cx="934" cy="252" r="3" fill="#171A43"/><text class="s" x="946" y="257">metrics (Aim 1, 2)</text>
+  <line x1="928" y1="342" x2="1060" y2="342" stroke="#B9B1FF" stroke-width="1.4"/>
+  <text class="s" x="928" y="366">reads files and</text>
+  <text class="s" x="928" y="383">cards only; never</text>
+  <text class="s" x="928" y="400">imports a method</text>
+
+  <!-- legend -->
+  <rect x="24"  y="490" width="14" height="14" rx="3" fill="#FBEFF5" stroke="#BA3F84" stroke-width="1.8"/>
+  <text class="s" x="44"  y="502">H&amp;E</text>
+  <rect x="94"  y="490" width="14" height="14" rx="3" fill="#EFEEFF" stroke="#6E62FF" stroke-width="1.8"/>
+  <text class="s" x="114" y="502">Visium (RNA)</text>
+  <rect x="226" y="490" width="14" height="14" rx="3" fill="#E6F4F2" stroke="#159384" stroke-width="1.8"/>
+  <text class="s" x="246" y="502">PhenoCycler (protein)</text>
+  <rect x="424" y="490" width="22" height="14" rx="4" fill="#F7F6FF" stroke="#6E62FF" stroke-width="1.8" stroke-dasharray="4 3"/>
+  <text class="s" x="454" y="502">one environment group; one SLURM array job per method and sample batch</text>
+</svg>

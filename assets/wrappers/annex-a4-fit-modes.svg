@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" width="1100" height="520" role="img" aria-labelledby="ttl desc">
+  <title id="ttl">Annex A4: fit modes under leave-one-sample-out</title>
+  <desc id="desc">Four tissue sections S1 to S4, with S4 held out. Frozen methods fit nothing and only transform. Fitted methods fit on S1 to S3 only, then transform S4. Transductive methods fit on the units they embed, including S4 without labels, and are flagged in every result table.</desc>
+  <style>
+    text { fill: #171A43; font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; }
+    .h  { font-size: 17px; font-weight: 700; letter-spacing: 0.04em; }
+    .col{ font-size: 13px; font-weight: 700; letter-spacing: 0.06em; fill: #4B4F78; }
+    .t  { font-size: 14px; font-weight: 700; }
+    .t16{ font-size: 16px; font-weight: 700; }
+    .s  { font-size: 13px; }
+    .g  { font-size: 13px; fill: #4B4F78; }
+    .n  { font-size: 13px; fill: #5A5D82; }
+    .m  { font-size: 13px; font-weight: 500; font-family: Consolas, "Courier New", monospace; }
+    .c  { text-anchor: middle; }
+    .e  { text-anchor: end; }
+  </style>
+  <rect width="1100" height="520" fill="#FFFFFF"/>
+
+  <text class="h" x="24" y="36">ANNEX A4: FIT MODES UNDER LEAVE-ONE-SAMPLE-OUT</text>
+  <text class="n e" x="1076" y="36">design draft, not implemented</text>
+  <text class="g" x="24" y="62">Four tissue sections; S4 is the held-out test section. Each row shows what the method may learn from.</text>
+
+  <text class="col" x="24"  y="98">FIT MODE AND CALLS</text>
+  <text class="t c" x="300" y="98">S1</text>
+  <text class="t c" x="410" y="98">S2</text>
+  <text class="t c" x="520" y="98">S3</text>
+  <text class="t c" x="630" y="98">S4 held out</text>
+  <text class="col" x="730" y="98">HARNESS RULE</text>
+  <line x1="24" y1="108" x2="1076" y2="108" stroke="#171A43" stroke-width="1.6"/>
+
+  <!-- frozen -->
+  <text class="t16" x="24" y="154">frozen</text>
+  <text class="m" x="24" y="174">transform</text>
+  <text class="g" x="24" y="196">pretrained weights,</text>
+  <text class="g" x="24" y="213">nothing is fitted</text>
+  <rect x="250" y="138" width="100" height="64" rx="8" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6"/><text class="s c" x="300" y="175">embed only</text>
+  <rect x="360" y="138" width="100" height="64" rx="8" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6"/><text class="s c" x="410" y="175">embed only</text>
+  <rect x="470" y="138" width="100" height="64" rx="8" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6"/><text class="s c" x="520" y="175">embed only</text>
+  <rect x="580" y="138" width="100" height="64" rx="8" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6"/><text class="s c" x="630" y="175">embed only</text>
+  <text class="s" x="730" y="156">Weights are checked unchanged after the run.</text>
+  <text class="g" x="730" y="178">e.g. pathology foundation models,</text>
+  <text class="g" x="730" y="196">KRONOS, the random-feature control</text>
+  <line x1="24" y1="236" x2="1076" y2="236" stroke="#D5D6EA" stroke-width="1.4"/>
+
+  <!-- fitted -->
+  <text class="t16" x="24" y="282">fitted</text>
+  <text class="m" x="24" y="302">fit, then transform</text>
+  <text class="g" x="24" y="324">learns from the training</text>
+  <text class="g" x="24" y="341">sections only</text>
+  <rect x="250" y="266" width="100" height="64" rx="8" fill="#E9E7FF" stroke="#6E62FF" stroke-width="2.4"/><text class="t c" x="300" y="303">fit + embed</text>
+  <rect x="360" y="266" width="100" height="64" rx="8" fill="#E9E7FF" stroke="#6E62FF" stroke-width="2.4"/><text class="t c" x="410" y="303">fit + embed</text>
+  <rect x="470" y="266" width="100" height="64" rx="8" fill="#E9E7FF" stroke="#6E62FF" stroke-width="2.4"/><text class="t c" x="520" y="303">fit + embed</text>
+  <rect x="580" y="266" width="100" height="64" rx="8" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6"/><text class="s c" x="630" y="303">embed only</text>
+  <text class="s" x="730" y="284">Fit on training units only, then transform S4.</text>
+  <text class="g" x="730" y="306">e.g. HVG + PCA, a trained fuser</text>
+  <line x1="24" y1="364" x2="1076" y2="364" stroke="#D5D6EA" stroke-width="1.4"/>
+
+  <!-- transductive -->
+  <text class="t16" x="24" y="410">transductive</text>
+  <text class="m" x="24" y="430">fit_transform</text>
+  <text class="g" x="24" y="452">fits on the units it</text>
+  <text class="g" x="24" y="469">embeds, per section</text>
+  <rect x="250" y="394" width="100" height="64" rx="8" fill="#E9E7FF" stroke="#6E62FF" stroke-width="2.4"/><text class="t c" x="300" y="431">fit + embed</text>
+  <rect x="360" y="394" width="100" height="64" rx="8" fill="#E9E7FF" stroke="#6E62FF" stroke-width="2.4"/><text class="t c" x="410" y="431">fit + embed</text>
+  <rect x="470" y="394" width="100" height="64" rx="8" fill="#E9E7FF" stroke="#6E62FF" stroke-width="2.4"/><text class="t c" x="520" y="431">fit + embed</text>
+  <rect x="580" y="394" width="100" height="64" rx="8" fill="#E9E7FF" stroke="#171A43" stroke-width="2.4" stroke-dasharray="6 4"/>
+  <text class="t c" x="630" y="422">fit + embed</text><text class="g c" x="630" y="442">(no labels)</text>
+  <text class="s" x="730" y="408">Flagged in every result table.</text>
+  <text class="s" x="730" y="428">Allowed here only if uses_labels is false.</text>
+  <text class="g" x="730" y="450">e.g. SpatialGlue, MISO</text>
+  <line x1="24" y1="490" x2="1076" y2="490" stroke="#171A43" stroke-width="1.6"/>
+</svg>
