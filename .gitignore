@@ -57,6 +57,7 @@ __pycache__/
 .mypy_cache/
 wandb/
 mlruns/
+results/
 outputs/
 runs/
 logs/
