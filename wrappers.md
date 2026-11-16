@@ -95,6 +95,3 @@ Random-feature control; ImageNet ResNet50 and one fetchable pathology foundation
 | Date | Change |
 |---|---|
 | 2026-11-16 | Draft v0 |
-| 2026-11-16 | Figure 1 (architecture overview) added |
-| 2026-11-16 | Annex figures A1–A6 added; Figure 1 corrected (joint = any 2–3 modalities) |
-| 2026-11-16 | Several named latents per run (`latent`, `informed_by`); figure font changed to Helvetica/Arial |
