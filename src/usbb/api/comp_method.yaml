@@ -1,0 +1,31 @@
+namespace: methods
+info:
+  type: method
+  type_info:
+    label: Method
+    summary: Embeds the test units of a bundle into the latents named in the method card.
+    description: |
+      One run of `python -m usbb.cli run --method <method_id>`.
+      Frozen methods ignore --input_train, fitted methods fit on it,
+      and transductive methods fit on --input_test without labels (flagged in RUN.json).
+      Unlike Open Problems, the inputs are bundle folders of such files and --output is a run folder:
+      the output file is `<output>/output/output.h5ad`, with RUN.json beside it.
+      --method, --params, --seed and --env_lock are usbb additions.
+arguments:
+  - name: --input_train
+    __merge__: file_input.yaml
+    required: false
+    direction: input
+  - name: --input_test
+    __merge__: file_input.yaml
+    required: true
+    direction: input
+  - name: --output
+    __merge__: file_output.yaml
+    required: true
+    direction: output
+  - name: --model
+    type: file
+    required: false
+    direction: input
+    description: Folder holding the method's pinned weights, for methods with weights.
