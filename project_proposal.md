@@ -114,10 +114,17 @@ Both are cases where a model that simply aligns modalities could look good while
 - **10x Xenium Protein (CC BY 4.0)**: same-cell RNA + 27 proteins + H&E on the same section, in two datasets: renal cell carcinoma (405 genes, post-Xenium H&E, released July 2025) and clear cell renal cell carcinoma (477 genes, aligned H&E, June 2026). The protein panel includes PD-L1, PD-1, LAG-3, CD4, CD8 and CD20, but not FOXP3. Gives a single-cell, same-section tri-modal check for cell-level tasks (Q2 test 3) for B cells; Tregs cannot be labelled from this panel.
 - **UnumLocalia (bioRxiv 2026; Zenodo 21713660)**: Xenium 5k + COMET 16-plex protein + H&E on the same FFPE section, four TMA cores (HCC, non-tumour liver, tonsil, hepatocellular adenoma), with alignment matrices and per-cell RNA + protein quantifications. Small, but independently generated same-section tri-modal data released after most current encoders.
 - **Haist et al. 2026 (Cancer Cell; independent HNSCC)**: 78 HNSCC patients on 3 TMAs (390 cores, primary tumours and lymph nodes). 53-plex CODEX with H&E on the same section after imaging; the panel includes PD-L1, FOXP3, CD4, CD8 and CD20. A 98-gene RNA imaging panel on adjacent sections of one TMA (not Visium; no *CD274* or *FOXP3*; 23 protein–gene pairs are measured on both layers). Images CC0 ([BioImage Archive S-BIAD1638](https://doi.org/10.6019/S-BIAD1638), ~0.61 TB); cell tables CC BY 4.0 ([Mendeley](https://doi.org/10.17632/t4k5kj3cxr.1)). A spora cohort, but held out for KRONOS and VirTues-sp32 (§3.3). The largest open, independent HNSCC set with same-section protein and H&E.
-- **Causer et al. 2023 (npj Precis Oncol)**: HPV+ oropharyngeal SCC with Visium + H&E (same section) and 11-plex PhenoCycler (adjacent section) for one tumour; the panel lacks PD-L1 and FOXP3. Data on [UQ eSpace](https://doi.org/10.48610/698bb9e); file list not yet read.
+- **Causer et al. 2023 (npj Precis Oncol)**: HPV+ oropharyngeal SCC with Visium + H&E (same section) and 11-plex PhenoCycler (adjacent section) for one tumour (sample MAR21); the panel lacks PD-L1 and FOXP3. Open access on [UQ eSpace](https://doi.org/10.48610/698bb9e), with re-use allowed if the record is cited. Download opened 9 Nov 2026:
+  - **PhenoCycler:** a QPTIFF image with DAPI and 11 markers, 0.38 µm per pixel, 8-bit, about 4.3 × 3.6 mm, and a QuPath table of 268,485 cells with no cell type labels (it also has four repeated header rows to strip).
+  - **Visium:** 2,077 tissue spots and 17,943 genes, with *CD274* and *FOXP3* in the gene list, plus pathologist annotations.
+  - **H&E:** only the Space Ranger high-resolution image, at 3.28 µm per pixel, too coarse for pathology encoders that expect about 0.5 µm per pixel. The image given to Space Ranger was about 0.93 µm per pixel and is not in the download.
+  - **Alignment:** no registration file. The H&E shows several tissue pieces and the CODEX image shows one, so perhaps a third to a half of the spots have matching protein (rough estimate, before registration).
+  - **Not opened:** the SEP21 and P5 zips, which are 7 to 19 MB, so too small to hold a full H&E scan or a CODEX image.
+  - **Requested from the authors, 9 Nov 2026:** the full-resolution H&E, the registration and the cell type labels.
 - **Jenkins et al. 2025 (Mol Cancer)**: Visium CytAssist for 10 HNSCC (7 HPV+), open on [Zenodo](https://doi.org/10.5281/zenodo.14284038) (CC BY 4.0); PhenoCycler-Fusion on the same patients is available on request. Markovits et al. 2025 (37-plex PhenoCycler-Fusion with same-slide H&E, 16 HNSCC, on request) may share patients.
 - **Simkin et al. 2026 (Nat Genet; GEO GSE268014)**: HNSCC Visium (fresh frozen) and Visium HD (FFPE), 26 tumours, HPV+ and HPV−. RNA only; a candidate Visium partner for Haist protein. Released after every encoder in §4.1.
 - **IN-DEPTH (Yiu et al. 2026, Cancer Discov)**: CODEX + CosMx or GeoMx + H&E on the same slide, diffuse large B-cell lymphoma and tonsil; open on [Zenodo](https://doi.org/10.5281/zenodo.14639480) (CC BY 4.0, ~86 GB in two records). Not head and neck; it is COSIE's tutorial 10 and possibly seen by KRONOS (§3.3).
+- **CORAL liver cancer data (He et al., bioRxiv 2025; deposit by Wu et al., [Zenodo 15392699](https://zenodo.org/records/15392699), CC BY 4.0)**: 13 HCC patients before and after checkpoint inhibition, about 1.5 million cells in 48 CODEX regions, and Visium on adjacent sections (22 samples per the record; the zip has 28 position files), with spot coordinates co-registered to the CODEX cells. The 51 markers include PD-L1, FOXP3, CD4, CD8 and CD20, and all ten markers named in §4.4. Liver cancer, so the biology differs. The deposit holds per-cell tables and Visium counts, with no images or H&E, so image-based protein encoders and H&E encoders cannot run on it; expression baselines, RNA encoders and table-based integration methods can. The link to CORAL is inferred: its patients P73 (non-responder) and P84 (responder) are in this record, its panel is also 51 markers, and the two preprints share authors.
 
 **Rule:** public data may be used to fit probes or heads. All headline results should be reported on the Badoual dataset.
 
@@ -142,6 +149,7 @@ Key: **N** released after the encoder, or checked against its list and not found
 | 10x Xenium Protein RCC (Jul 2025) | N | N | n/c | N | N | N | n/c | N |
 | UPMC-HNC (Aug 2024, tables only) | n/a | n/a | n/a | n/a | N | N | **Y** ᵉ | N |
 | Simkin (Jun 2026) | N | N | N | N | n/a | n/a | n/a | n/a |
+| CORAL liver cancer data (May 2025, tables only) | n/a | n/a | n/a | N | n/a | n/a | n/a ᶠ | n/a |
 
 ¹ UNI/UNI2, CONCH, Phikon/Phikon-v2, CTransPath (public corpora checked or older than the data). Virchow2, H-Optimus-0/1 and Prov-GigaPath describe internal clinical archives and cannot be checked; public research sets are unlikely to be in them. The tissue type is still seen: TCGA head-and-neck slides are in Phikon, Phikon-v2 and CTransPath.
 ² scGPT, Geneformer, UCE, CellPLM, Nicheformer, scGPT-spatial, Novae.
@@ -151,6 +159,7 @@ Key: **N** released after the encoder, or checked against its list and not found
 ᶜ KRONOS pretrained on private BIDMC CODEX lymph node and tonsil data, and one of its corresponding authors (Sizun Jiang) leads IN-DEPTH. IN-DEPTH is also COSIE's tutorial 10.
 ᵈ STORM's data statement names lymphoid tissues from the 10x portal. Separately, the [COSIE-Foundation](https://huggingface.co/pennweili/cosie-foundation) checkpoint contains the 10x 35-antibody panel, so these sets are not held out for it.
 ᵉ 327 UPMC-HNC regions were used in Eva's training (Eva v2 Methods).
+ᶠ The protein encoders need images, which are not public for this set. If the images are ever requested, check Eva and ROSIE, because one of the deposit's authors is at Enable Medicine.
 
 **Still open:** which Xenium samples HEST v1.3 added (its metadata is behind the HEST terms on Hugging Face); Eva's region-level pretraining list, to request from Enable Medicine together with ROSIE; whether the IN-DEPTH CODEX images are in KRONOS's private pretraining data; COSIE-Foundation's training sections; STORM's full sample list and weights.
 
@@ -243,7 +252,7 @@ Key: **N** released after the encoder, or checked against its list and not found
 
 *Ground truth.* PhenoCycler marker intensity aggregated to Visium pseudospots (same section), paired with the matched gene's Visium expression.
 
-*Extension beyond PD-L1.* Most markers on the preprint's ~33-marker PhenoCycler panel have an RNA counterpart (e.g. PD-L1/*CD274*, PD1/*PDCD1*, LAG3, FOXP3, CD8, CD20/*MS4A1*, Ki67/*MKI67*, podoplanin/*PDPN*, TCF-1/*TCF7*, CD14). Cécile's six samples are 6-plex (§3.1), so on them the atlas covers at most six markers. The multi-marker version therefore runs on public data: Haist 2026 measures 23 protein–gene pairs on adjacent sections of the same cores, and the 10x tonsil Gene and Protein set measures PD-L1 protein and *CD274* RNA at the same spot (§3.2). Computing per-marker RNA–protein concordance turns one observation into a **discordance atlas**. The concordant markers named in the paper serve as positive controls.
+*Extension beyond PD-L1.* Most markers on the preprint's ~33-marker PhenoCycler panel have an RNA counterpart (e.g. PD-L1/*CD274*, PD1/*PDCD1*, LAG3, FOXP3, CD8, CD20/*MS4A1*, Ki67/*MKI67*, podoplanin/*PDPN*, TCF-1/*TCF7*, CD14). Cécile's six samples are 6-plex (§3.1), so on them the atlas covers at most six markers. The multi-marker version therefore runs on public data (§3.2). The CORAL liver cancer data has all ten markers above with Visium on adjacent sections, and the CORAL paper reports *CD274* in that Visium, though it is a different cancer. Haist 2026 measures 23 protein–gene pairs on adjacent sections of the same cores, and the 10x tonsil Gene and Protein set measures PD-L1 protein and *CD274* RNA at the same spot. PD-L1 itself cannot be tested on Causer (no PD-L1 protein) or within Haist (no *CD274* on its RNA panel). Computing per-marker RNA–protein concordance turns one observation into a **discordance atlas**. The concordant markers named in the paper serve as positive controls.
 
 *Tests*
 1. **Recovery.** Predict protein (per marker, per pseudospot) from the RNA latent, the H&E latent and each joint latent. The key comparison is performance on **discordant** markers vs concordant ones. Does adding H&E or integration rescue PD-L1 where RNA alone fails?
@@ -252,7 +261,7 @@ Key: **N** released after the encoder, or checked against its list and not found
 
 #### Primary question Q2: spatially dispersed immune populations (conditional)
 
-*Ground truth.* Per-pseudospot Treg and B-cell counts and fractions from PhenoCycler single-cell annotations (same section); single-cell labels for cell-level H&E tasks.
+*Ground truth.* Per-pseudospot Treg and B-cell counts and fractions from PhenoCycler single-cell annotations (same section); single-cell labels for cell-level H&E tasks. On public data, the CORAL liver cancer data has FOXP3, CD4 and CD20 with Visium on adjacent sections. Its supplied cell types include B cells but not Tregs, so Tregs would have to be called from FOXP3 and CD4.
 
 *Tests*
 0. **Quantify the premise.** Compute per-spot Treg and B-cell fractions and how often each is present but not dominant. The paper states this only qualitatively. If too few such spots exist, Q2 is dropped or merged into the supporting cell-phenotyping task.
@@ -403,3 +412,7 @@ Aim 2 (interpretability: known-biology ledger, SAEs, LEACE erasure, steering) is
 - Yiu et al. IN-DEPTH. Cancer Discov 2026. [10.1158/2159-8290.CD-25-0775](https://doi.org/10.1158/2159-8290.CD-25-0775); data: [Zenodo 14639480](https://doi.org/10.5281/zenodo.14639480)
 - SpatialGlue lymph node and tonsil CytAssist Gene and Protein data. [GEO GSE263617](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE263617)
 - 10x Genomics. Xenium Protein, FFPE human clear cell renal cell carcinoma (CC BY 4.0). [10xgenomics.com/datasets](https://www.10xgenomics.com/datasets/xenium-protein-ffpe-human-renal-ccrcc)
+
+**Added 9 Nov 2026 (CORAL and Causer checks)**
+- He S. et al. Learning single-cell spatial context through integrated spatial multiomics with CORAL. bioRxiv 2025. [10.1101/2025.02.01.636038](https://doi.org/10.1101/2025.02.01.636038); code: [zou-group/CORAL](https://github.com/zou-group/CORAL)
+- Wu Z. et al. Spatial multi-omics and deep learning reveal fingerprints of immunotherapy response and resistance in hepatocellular carcinoma. bioRxiv 2025. [10.1101/2025.06.11.656869](https://doi.org/10.1101/2025.06.11.656869); data: [Zenodo 15392699](https://zenodo.org/records/15392699)
