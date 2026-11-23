@@ -90,17 +90,21 @@ def _input_ok(spec) -> bool:
     return True
 
 
-def _outputs_problems(outputs, inputs) -> list:
+def _outputs_problems(outputs, inputs, control) -> list:
     if not outputs or not all(
-        isinstance(o, dict) and set(o) == {"latent", "informed_by"} for o in outputs
+        isinstance(o, dict)
+        and set(o) == {"latent", "informed_by"}
+        and isinstance(o["informed_by"], list)
+        for o in outputs
     ):
-        return ["outputs must be a non-empty list of {latent, informed_by}"]
+        return ["outputs must be a non-empty list of {latent, informed_by: [...]}"]
     if len({o["latent"] for o in outputs}) < len(outputs):
         return ["outputs must have distinct latent names"]
+    # A control reads no values, so it may say it is informed by nothing.
     return [
-        f"informed_by of {o['latent']} must list inputs of the card"
+        f"informed_by of {o['latent']} must list inputs of the card (empty only for a control)"
         for o in outputs
-        if not (o["informed_by"] and set(o["informed_by"]) <= set(inputs))
+        if not set(o["informed_by"]) <= set(inputs) or not (o["informed_by"] or control)
     ]
 
 
@@ -151,7 +155,7 @@ def _problems(card, folder) -> list:
             "inputs must map each modality to {kind: matrix, value_scale},"
             " {kind: image, um_per_px, patch_px} or {kind: embedding}"
         )
-    problems += _outputs_problems(card["outputs"], card["inputs"])
+    problems += _outputs_problems(card["outputs"], card["inputs"], card["control"])
     if not isinstance(card["references"].get("doi"), list):
         problems.append("references must be {doi: [...]}")
     if set(card["links"]) != {"repository", "documentation"}:

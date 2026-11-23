@@ -1,0 +1,23 @@
+method_id: mean_intensity
+class: MeanIntensity
+label: Mean marker intensity
+summary: "Each unit's value for every protein marker, divided by a cofactor and passed through arcsinh."
+description: >-
+  One dimension per marker of the protein table, isotype controls included: arcsinh(value /
+  cofactor). Nothing is fitted.
+references: {doi: []}
+links: {repository: null, documentation: null}
+family: encoder
+control: false
+fit_mode: frozen
+units: [spot]
+inputs:
+  protein: {kind: matrix, value_scale: raw_counts}
+outputs:
+  - {latent: intensity, informed_by: [protein]}
+parameters: {cofactor: 5.0}
+weights: null
+env_group: core
+resources: {cpu: lowcpu, memory: lowmem, time: lowtime, gpu: null}
+heldout: {}
+intended_usage: "Baseline protein embedding that every protein encoder and H&E-to-protein method is compared with."

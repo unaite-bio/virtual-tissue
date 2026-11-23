@@ -1,0 +1,23 @@
+method_id: concat
+class: Concat
+label: Early fusion (concatenation)
+summary: "Every latent of every upstream output, concatenated in file then latent name order, without scaling."
+description: >-
+  Reads the upstream outputs the experiment names (<upstream_method_id>.h5ad in the bundle) and
+  concatenates all their obsm entries except spatial, ordered by file name then latent name.
+references: {doi: []}
+links: {repository: null, documentation: null}
+family: fuser
+control: false
+fit_mode: frozen
+units: [spot, pseudospot, cell]
+inputs:
+  upstream: {kind: embedding}
+outputs:
+  - {latent: concat, informed_by: [upstream]}
+parameters: {}
+weights: null
+env_group: core
+resources: {cpu: lowcpu, memory: lowmem, time: lowtime, gpu: null}
+heldout: {}
+intended_usage: "Baseline fuser: a fusion method should beat the plain concatenation of its inputs."
