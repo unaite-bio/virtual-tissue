@@ -4,9 +4,20 @@ channels:
   - bioconda
   - nodefaults
 dependencies:
-  - python=3.11
+  - python=3.12
   - pip
+  - numpy
+  - pyyaml
+  - anndata
+  - h5py
+  - scipy
+  - pandas
+  - pillow
+  - tifffile
+  - huggingface_hub
   - pytest
   - ruff
   - pre-commit
   - conda-lock
+  - pip:
+      - spatialdata==0.9.*
