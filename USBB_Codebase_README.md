@@ -62,7 +62,7 @@ The work runs on the local machine or on a computing cluster.
 2. Write `card.yaml`: inputs and outputs, fit mode, environment group; for a pretrained model, the pinned weights.
 3. Write `method.py`, starting from the closest example in the table below.
 4. Reuse an environment group, or add one with the reason the method cannot share.
-5. Run its contract test: `pytest src/usbb/methods/<id>`.
+5. Run its contract test: `pytest tests/test_contract.py -k <id>` (a method with pinned weights also has its own test in its folder).
 6. Open the pull request and tick its "Adding a method" checklist.
 
 | Kind of method | Examples from our list | What to write | Start from |
