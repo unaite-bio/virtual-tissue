@@ -1,8 +1,14 @@
 [project]
 name = "virtual-tissue"
 version = "0.1.0"
-requires-python = ">=3.11"
-dependencies = [] # add as we go
+requires-python = ">=3.8"
+dependencies = ["numpy", "pyyaml", "anndata>=0.8", "h5py"]
+
+[project.optional-dependencies]
+data = ["spatialdata>=0.9,<0.10", "scipy", "pandas", "pillow", "tifffile", "huggingface_hub"]
+
+[project.scripts]
+usbb = "usbb.cli:main"
 
 [dependency-groups]
 dev = ["pytest", "ruff", "pre-commit"]
@@ -12,11 +18,13 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/model"]
+packages = ["src/usbb"]
 
 [tool.ruff]
 line-length = 100
+target-version = "py38"
 
 [tool.pytest.ini_options]
+testpaths = ["tests", "src/usbb/methods"]
 markers = ["gpu: needs a GPU", "slow: long-running"]
 addopts = "-m 'not gpu and not slow'"

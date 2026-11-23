@@ -1,5 +1,5 @@
-import model
+import usbb
 
 
 def test_import():
-    assert model is not None
+    assert usbb is not None
