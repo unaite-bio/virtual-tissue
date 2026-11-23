@@ -27,6 +27,15 @@ pre-commit install
 
 Direct pushes to `main` are blocked — all changes go through a PR.
 
+## Adding a method
+- Read "Adding a method" in [USBB_Codebase_README.md](USBB_Codebase_README.md),
+  then find the method in the [methods index](src/usbb/methods/README.md).
+- Open a **Method** issue and work on a branch `feat/<method_id>`.
+- No guide yet? Copy the [guide template](src/usbb/methods/_template/README.md)
+  to `src/usbb/methods/<method_id>/README.md`.
+- The lock file (`pixi.lock`) is generated and does not count toward the
+  400-line PR limit.
+
 ## Day-to-day tips
 - **Pre-commit modified files?** It auto-fixed formatting. Run `git add .`
   and commit again.
