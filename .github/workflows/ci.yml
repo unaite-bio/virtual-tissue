@@ -21,3 +21,28 @@ jobs:
       - run: ruff check .
       - run: ruff format --check .
       - run: pytest
+
+  h5ad-compat:
+    runs-on: ubuntu-24.04  # setup-python has no Python 3.8 build for later images
+    env:
+      PYTHONPATH: src
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        id: new
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-python@v6
+        id: old
+        with:
+          python-version: "3.8"
+      - name: Install the newest stack and SpatialGlue's pinned stack
+        run: |
+          ${{ steps.new.outputs.python-path }} -m pip install anndata h5py numpy pandas scipy pyyaml
+          ${{ steps.old.outputs.python-path }} -m pip install anndata==0.8.0 numpy==1.22.3 pandas==1.4.2 scipy==1.8.1 h5py==3.6.0 pyyaml
+      - name: Newest writes, anndata 0.8 reads, and the reverse
+        run: |
+          ${{ steps.new.outputs.python-path }} tests/compat/h5ad_compat.py write $RUNNER_TEMP/new
+          ${{ steps.old.outputs.python-path }} tests/compat/h5ad_compat.py check $RUNNER_TEMP/new
+          ${{ steps.old.outputs.python-path }} tests/compat/h5ad_compat.py write $RUNNER_TEMP/old
+          ${{ steps.new.outputs.python-path }} tests/compat/h5ad_compat.py check $RUNNER_TEMP/old
