@@ -1,0 +1,10 @@
+# 10x tonsil CytAssist (Gene + Protein), one store, for the first cluster run.
+# One section from one patient offers no split, so fitted methods (hvg_pca) are left out.
+# Paths are relative to the repo root.
+dataset: data/processed/tenx_tonsil/
+unit: spot
+seed: 0
+methods:
+  - random_features
+  - mean_intensity
+  - concat: {inputs: [random_features, mean_intensity]}

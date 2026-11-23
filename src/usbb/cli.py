@@ -1,4 +1,4 @@
-"""Command line: `usbb run` (the method step) and `usbb validate` (a SpatialData store)."""
+"""Command line: `usbb run` (the method step), `usbb validate` (a store), `usbb launch` (an experiment)."""
 
 from __future__ import annotations
 
@@ -36,6 +36,11 @@ def main(argv=None) -> None:
     )
     validate.add_argument("store", help="path to a <store_id>.zarr store")
 
+    launch = commands.add_parser(
+        "launch", help="run every method of an experiment file that has no complete run"
+    )
+    launch.add_argument("experiment", help="experiment file, experiments/<name>.yaml")
+
     args = parser.parse_args(argv)
     if args.command == "run":
         output = run_method(
@@ -49,6 +54,11 @@ def main(argv=None) -> None:
             args.env_lock,
         )
         print(output)
+    elif args.command == "launch":
+        from usbb.launch import launch_experiment  # spatialdata exists in the core env only
+
+        if not launch_experiment(args.experiment):
+            raise SystemExit(1)
     else:
         from usbb.data.schema import validate_store  # spatialdata exists in the core env only
 

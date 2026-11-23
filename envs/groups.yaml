@@ -1,0 +1,12 @@
+# One locked conda environment per group of methods that can share dependencies.
+# A card's env_group is the only membership list. Each group says why it cannot join another.
+# The launcher hashes the lock into the run key; the command that runs inside a group's
+# environment is machine-specific and lives in the untracked usbb.local.toml ([groups]).
+
+core:
+  reason: The usbb core (Python 3.12, SpatialData 0.9) runs the launcher, data preparation and the reference methods, which need only numpy.
+  lock: conda-lock.yml
+
+torch:
+  reason: Pretrained encoders need PyTorch with CUDA, timm and transformers, too heavy for the core environment and for CI.
+  lock: envs/torch/conda-lock.yml
