@@ -23,6 +23,63 @@ packages = ["src/usbb"]
 [tool.ruff]
 line-length = 100
 target-version = "py38"
+extend-exclude = [".pixi"]
+
+# Environments: `pixi install` builds the default one (core and dev tools); each group of methods
+# with its own dependencies gets a feature and an environment below, all in one pixi.lock.
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = [
+  "linux-64",
+  "osx-arm64",
+  "win-64",
+  { name = "linux-64-cuda", platform = "linux-64", cuda = "12" },
+]
+
+[tool.pixi.dependencies]
+python = "3.12.*"
+numpy = "*"
+pyyaml = "*"
+anndata = "*"
+h5py = "*"
+scipy = "*"
+pandas = "*"
+pillow = "*"
+tifffile = "*"
+huggingface_hub = "*"
+
+[tool.pixi.pypi-dependencies]
+virtual-tissue = { path = ".", editable = true }
+spatialdata = "==0.9.*"  # not on conda-forge yet
+
+[tool.pixi.tasks]
+test = "pytest"
+lint = "ruff check . && ruff format --check ."
+
+# The torch group: pretrained image encoders, on GPU nodes only. Self-contained (conda packages
+# only): method steps run usbb from the checkout through PYTHONPATH=src, so it is not installed.
+[tool.pixi.feature.torch]
+platforms = ["linux-64-cuda"]
+
+[tool.pixi.feature.torch.dependencies]
+python = "3.12.*"
+numpy = "*"
+pyyaml = "*"
+anndata = "*"
+h5py = "*"
+pandas = "*"
+pillow = "*"
+pytest = "*"
+huggingface_hub = "*"
+pytorch-gpu = "*"  # forces the CUDA build of pytorch
+torchvision = "*"
+timm = ">=1.0"
+transformers = ">=5"
+safetensors = "*"
+
+[tool.pixi.environments]
+default = ["dev"]
+torch = { features = ["torch"], no-default-feature = true }
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "src/usbb/methods"]

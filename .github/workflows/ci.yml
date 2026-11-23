@@ -7,20 +7,13 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -el {0}
     steps:
       - uses: actions/checkout@v5
-      - uses: mamba-org/setup-micromamba@v3
+      - uses: prefix-dev/setup-pixi@v0.11.3  # installs the default environment from pixi.lock
         with:
-          environment-file: conda-lock.yml
-          environment-name: virtual-tissue
-          cache-environment: true
-      - run: pip install -e .
-      - run: ruff check .
-      - run: ruff format --check .
-      - run: pytest
+          pixi-version: v0.84.2
+      - run: pixi run lint
+      - run: pixi run test
 
   h5ad-compat:
     runs-on: ubuntu-24.04  # setup-python has no Python 3.8 build for later images
