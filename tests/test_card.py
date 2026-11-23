@@ -84,6 +84,13 @@ def test_informed_by_must_name_inputs_of_the_card(tmp_path):
         load_card(path)
 
 
+def test_only_a_control_may_be_informed_by_nothing(tmp_path):
+    outputs = [{"latent": "z", "informed_by": []}]
+    with pytest.raises(CardError, match="informed_by of z"):
+        load_card(write_card(tmp_path, outputs=outputs))
+    assert load_card(write_card(tmp_path, outputs=outputs, control=True)).control
+
+
 def test_weights_need_a_full_revision_and_sha256s(tmp_path):
     weights = {
         "repo": "a/b",

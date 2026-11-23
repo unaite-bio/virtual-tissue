@@ -1,0 +1,23 @@
+method_id: random_features
+class: RandomFeatures
+label: Random features (negative control)
+summary: "Standard normal features drawn from the run seed and the unit id only, so they carry no biology."
+description: >-
+  Negative control. Each unit gets n_features standard normal values from a generator seeded by
+  the run seed and the unit id. The protein values are never read: the input only names the units.
+references: {doi: []}
+links: {repository: null, documentation: null}
+family: encoder
+control: true
+fit_mode: frozen
+units: [spot]
+inputs:
+  protein: {kind: matrix, value_scale: raw_counts}
+outputs:
+  - {latent: random, informed_by: []}
+parameters: {n_features: 50}
+weights: null
+env_group: core
+resources: {cpu: lowcpu, memory: lowmem, time: lowtime, gpu: null}
+heldout: {}
+intended_usage: "The floor of every probe: a method that does not beat it has learnt nothing from the tissue."

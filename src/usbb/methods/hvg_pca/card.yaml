@@ -1,0 +1,23 @@
+method_id: hvg_pca
+class: HvgPca
+label: HVG + PCA
+summary: "Principal components of the most variable log-normalised genes, fitted on the training units only."
+description: >-
+  Counts per 10,000 then log1p; the n_top_genes genes of highest variance in the train bundle;
+  PCA on those genes fitted on the train bundle, then applied to the test bundle. numpy only.
+references: {doi: []}
+links: {repository: null, documentation: null}
+family: encoder
+control: false
+fit_mode: fitted
+units: [spot]
+inputs:
+  rna: {kind: matrix, value_scale: raw_counts}
+outputs:
+  - {latent: pca, informed_by: [rna]}
+parameters: {n_top_genes: 2000, n_components: 50}
+weights: null
+env_group: core
+resources: {cpu: lowcpu, memory: lowmem, time: lowtime, gpu: null}
+heldout: {}
+intended_usage: "Baseline RNA embedding that every pretrained RNA encoder is compared with."
