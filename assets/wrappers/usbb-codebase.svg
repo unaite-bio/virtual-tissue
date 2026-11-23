@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 620" width="1100" height="620" role="img" aria-labelledby="ttl desc">
+  <title id="ttl">USBB codebase</title>
+  <desc id="desc">Top: tissue data, kept as one SpatialData store per registered coordinate frame, is turned into method inputs (step 1, prepare, code in usbb/data), a method runs on them (step 2, usbb run, using the method's folder with its card and code) and writes its output with a run record, and evaluation turns outputs into scores (step 3). usbb launch repeats steps 1 and 2 for every method listed in an experiment file. Bottom: which files live where and in which environment.</desc>
+  <style>
+    text { fill: #171A43; font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; }
+    .h  { font-size: 17px; font-weight: 700; letter-spacing: 0.04em; }
+    .col{ font-size: 13px; font-weight: 700; letter-spacing: 0.06em; fill: #4B4F78; }
+    .t  { font-size: 14px; font-weight: 700; }
+    .s  { font-size: 13px; }
+    .g  { font-size: 13px; fill: #4B4F78; }
+    .n  { font-size: 13px; fill: #5A5D82; }
+    .m  { font-size: 13px; font-weight: 500; font-family: Consolas, "Courier New", monospace; }
+    .mb { font-size: 13px; font-weight: 700; font-family: Consolas, "Courier New", monospace; }
+    .c  { text-anchor: middle; }
+    .e  { text-anchor: end; }
+  </style>
+  <defs>
+    <marker id="a-ink" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#171A43"/></marker>
+    <marker id="a-vis" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#6E62FF"/></marker>
+  </defs>
+  <rect width="1100" height="620" fill="#FFFFFF"/>
+
+  <text class="h" x="24" y="36">USBB CODEBASE</text>
+  <text class="n e" x="1076" y="36">plan, not implemented yet</text>
+  <text class="g" x="24" y="62">Boxes are what exists on disk; arrows are the three steps, with the code that does each. A store holds everything aligned to one coordinate frame.</text>
+
+  <text class="col" x="24" y="98">HOW A RUN FLOWS</text>
+
+  <!-- what exists on disk -->
+  <rect x="24" y="118" width="180" height="88" rx="10" fill="#FFFFFF" stroke="#171A43" stroke-width="2"/>
+  <text class="t" x="38" y="144">Tissue data</text>
+  <text class="s" x="38" y="164">one SpatialData store</text>
+  <text class="g" x="38" y="181">per registered frame,</text>
+  <text class="g" x="38" y="198">with annotations</text>
+
+  <rect x="314" y="118" width="210" height="88" rx="10" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="t" x="328" y="144">Method inputs</text>
+  <text class="s" x="328" y="164">train/ and test/ folders</text>
+  <text class="g" x="328" y="181">one h5ad per modality,</text>
+  <text class="g" x="328" y="198">raw values, unit IDs</text>
+
+  <rect x="634" y="118" width="200" height="88" rx="10" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="t" x="648" y="144">Method output</text>
+  <text class="s" x="648" y="164">embeddings, one h5ad</text>
+  <text class="g" x="648" y="181">plus RUN.json, the</text>
+  <text class="g" x="648" y="198">record of the run</text>
+
+  <rect x="944" y="118" width="132" height="88" rx="10" fill="#FFFFFF" stroke="#171A43" stroke-width="2.4"/>
+  <text class="t" x="958" y="144">Scores</text>
+  <text class="s" x="958" y="164">per task</text>
+  <text class="g" x="958" y="181">to be designed</text>
+
+  <!-- the three steps -->
+  <text class="t c" x="259" y="138">1. prepare</text>
+  <text class="m c" x="259" y="154">usbb/data</text>
+  <line x1="206" y1="166" x2="312" y2="166" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+  <text class="g c" x="259" y="186">validates the</text>
+  <text class="g c" x="259" y="202">store first</text>
+
+  <text class="t c" x="579" y="138">2. run</text>
+  <text class="m c" x="579" y="154">usbb run</text>
+  <line x1="526" y1="166" x2="632" y2="166" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+
+  <text class="t c" x="889" y="138">3. evaluate</text>
+  <text class="g c" x="889" y="154">metrics</text>
+  <line x1="836" y1="166" x2="942" y2="166" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+
+  <!-- the method plugs into step 2 -->
+  <line x1="579" y1="232" x2="579" y2="172" stroke="#6E62FF" stroke-width="2" marker-end="url(#a-vis)"/>
+  <rect x="469" y="232" width="220" height="80" rx="10" fill="#E9E7FF" stroke="#6E62FF" stroke-width="2.4"/>
+  <text class="mb" x="485" y="254">methods/&lt;id&gt;/</text>
+  <text class="s" x="485" y="272">card.yaml: what it needs</text>
+  <text class="s" x="485" y="289">method.py: the code</text>
+  <text class="g" x="485" y="305">runs in its own environment</text>
+
+  <!-- launch -->
+  <rect x="24" y="334" width="1052" height="64" rx="10" fill="#F7F6FF" stroke="#6E62FF" stroke-width="1.8"/>
+  <text class="mb" x="40" y="355">usbb launch experiments/&lt;name&gt;.yaml</text>
+  <text class="s" x="40" y="373">An experiment file lists the datasets, methods and settings to run.</text>
+  <text class="s" x="40" y="390">Launch repeats steps 1 and 2 for each method and skips runs already done.</text>
+
+  <line x1="24" y1="420" x2="1076" y2="420" stroke="#D5D6EA" stroke-width="1.4"/>
+
+  <!-- what lives where -->
+  <text class="col" x="24" y="446">WHAT LIVES WHERE</text>
+  <text class="g" x="190" y="446">paths inside src/usbb/ unless noted</text>
+
+  <rect x="24" y="458" width="516" height="32" rx="8" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="m" x="38" y="479">card.py method.py io.py run.py cli.py api/</text>
+  <text class="g e" x="526" y="479">every env, Python 3.8+</text>
+
+  <rect x="24" y="498" width="516" height="32" rx="8" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="m" x="38" y="519">patch_encoder.py</text>
+  <text class="g e" x="526" y="519">image encoders, torch envs</text>
+
+  <rect x="24" y="538" width="516" height="32" rx="8" fill="#FFFFFF" stroke="#171A43" stroke-width="2"/>
+  <text class="m" x="38" y="559">launch.py executors.py weights.py</text>
+  <text class="g e" x="526" y="559">core env, Python 3.12</text>
+
+  <rect x="24" y="578" width="516" height="32" rx="8" fill="#FFFFFF" stroke="#171A43" stroke-width="2"/>
+  <text class="m" x="38" y="599">envs/&lt;group&gt;/ conda-lock.yml</text>
+  <text class="g e" x="526" y="599">repo root, one per group</text>
+
+  <rect x="560" y="458" width="516" height="32" rx="8" fill="#FFFFFF" stroke="#171A43" stroke-width="2"/>
+  <text class="m" x="574" y="479">data/ schema process pseudospots tenx</text>
+  <text class="g e" x="1062" y="479">core env, SpatialData</text>
+
+  <rect x="560" y="498" width="516" height="32" rx="8" fill="#E9E7FF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="m" x="574" y="519">methods/&lt;id&gt;/ card.yaml method.py README.md</text>
+  <text class="g e" x="1062" y="519">one folder per method</text>
+
+  <rect x="560" y="538" width="516" height="32" rx="8" fill="#FFFFFF" stroke="#171A43" stroke-width="2"/>
+  <text class="m" x="574" y="559">experiments/&lt;name&gt;.yaml</text>
+  <text class="g e" x="1062" y="559">repo root, what to run</text>
+
+  <rect x="560" y="578" width="516" height="32" rx="8" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <text class="m" x="574" y="599">data/processed/&lt;dataset&gt;/&lt;store_id&gt;.zarr</text>
+  <text class="g e" x="1062" y="599">the stores, not in git</text>
+</svg>

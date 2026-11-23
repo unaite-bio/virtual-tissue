@@ -50,7 +50,7 @@
   <text class="t16" x="710" y="114">Written for each (run key, sample)</text>
   <circle cx="722" cy="146" r="12" fill="#171A43"/><text class="w c" x="722" y="151">1</text>
   <text class="t" x="746" y="146">Embedding file</text>
-  <text class="s" x="746" y="165">values, unit_ids, unit_type, sample_id, latent</text>
+  <text class="s" x="746" y="165">values, unit_ids, unit_type, store_id, latent</text>
   <circle cx="722" cy="206" r="12" fill="#171A43"/><text class="w c" x="722" y="211">2</text>
   <text class="mb" x="746" y="206">RUN.json</text>
   <text class="s" x="746" y="225">env lock hash, seed, hardware, wall time,</text>

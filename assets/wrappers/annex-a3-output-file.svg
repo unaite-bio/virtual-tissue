@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" width="1100" height="540" role="img" aria-labelledby="ttl desc">
   <title id="ttl">Annex A3: what an output file contains</title>
-  <desc id="desc">An Embedding file has one row per unit: unit_ids on the left and the values matrix of n_units by d on the right, plus unit_type, sample_id and run key. Two methods are joined on unit_ids, not on row order. A translator's prediction file has named marker columns instead of embedding dimensions. Values are illustrative; the IDs are Visium barcodes from the 10x tonsil dataset.</desc>
+  <desc id="desc">An Embedding file has one row per unit: unit_ids on the left and the values matrix of n_units by d on the right, plus unit_type, store_id and run key. Two methods are joined on unit_ids, not on row order. A translator's prediction file has named marker columns instead of embedding dimensions. Values are illustrative; the IDs are Visium barcodes from the 10x tonsil dataset.</desc>
   <style>
     text { fill: #171A43; font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; }
     .h  { font-size: 17px; font-weight: 700; letter-spacing: 0.04em; }
@@ -18,7 +18,7 @@
 
   <text class="h" x="24" y="36">ANNEX A3: WHAT AN OUTPUT FILE CONTAINS</text>
   <text class="n e" x="1076" y="36">design draft, not implemented</text>
-  <text class="g" x="24" y="62">One file per run and sample. Numbers are illustrative; the IDs are real Visium barcodes from the 10x tonsil set.</text>
+  <text class="g" x="24" y="62">One file per run. Numbers are illustrative; IDs are real 10x tonsil barcodes, shown without their store_id: prefix.</text>
 
   <!-- embedding table -->
   <rect x="24" y="84" width="612" height="236" rx="12" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
@@ -50,8 +50,8 @@
   <text class="t16" x="676" y="112">Carried with the file</text>
   <text class="mb" x="676" y="140">unit_type</text>
   <text class="s"  x="676" y="157">spot, pseudospot or cell; one value per file</text>
-  <text class="mb" x="676" y="178">sample_id</text>
-  <text class="s"  x="676" y="195">the tissue section this file covers</text>
+  <text class="mb" x="676" y="178">store_id</text>
+  <text class="s"  x="676" y="195">per row: the store the unit comes from</text>
   <text class="mb" x="676" y="216">run key</text>
   <text class="s"  x="676" y="233">exact method and config (see Annex A6)</text>
   <text class="mb" x="676" y="254">latent</text>
