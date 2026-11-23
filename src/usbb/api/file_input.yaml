@@ -1,0 +1,82 @@
+type: file
+label: Method input
+summary: "One modality of a train or test bundle: raw values or image patches per unit, with unit metadata."
+description: |
+  A bundle is a folder with one such file per input the method card names, called `<modality>.h5ad`.
+  Fusers receive copies of upstream method outputs instead (`<method_id>.h5ad`, see file_output.yaml).
+  All files of a bundle share the same obs_names, the unit ids `<store_id>:<instance_id>`, in the same order.
+  A matrix modality holds `layers/counts` when `uns/value_scale` is raw_counts, `layers/intensity` otherwise, and no X.
+  An image modality holds `obsm/patches` and `uns/patch`, cut at the method card's geometry.
+  Inputs carry no labels.
+info:
+  format:
+    type: h5ad
+    obs:
+      - type: string
+        name: store_id
+        description: Store the unit comes from.
+        required: true
+      - type: string
+        name: section_id
+        description: Tissue section of the unit.
+        required: true
+      - type: string
+        name: sample_id
+        description: Sample of the unit.
+        required: true
+      - type: string
+        name: patient_id
+        description: Patient of the unit.
+        required: true
+      - type: string
+        name: core_id
+        description: Tissue microarray core of the unit, for TMA stores only.
+        required: false
+    var:
+      - type: string
+        name: gene_symbol
+        description: Gene symbol from the provider; var_names are the provider's feature ids. Matrix modalities only.
+        required: false
+    obsm:
+      - type: double
+        name: spatial
+        description: Unit centre in µm in the store's global coordinate system, float64 (n_units, 2).
+        required: true
+      - type: integer
+        name: patches
+        description: Image patches centred on each unit, uint8 (n_units, size_px, size_px, channels). Image modalities only.
+        required: false
+    layers:
+      - type: integer
+        name: counts
+        description: Raw counts, when value_scale is raw_counts.
+        required: false
+      - type: double
+        name: intensity
+        description: Intensities on the scale given by value_scale, for the other matrix modalities.
+        required: false
+    uns:
+      - type: string
+        name: dataset_id
+        description: Dataset the bundle was made from.
+        required: true
+      - type: string
+        name: modality
+        description: Modality of the file (rna, protein, he), equal to the file name without .h5ad.
+        required: true
+      - type: string
+        name: unit_type
+        description: spot, pseudospot or cell; the same in every file of a bundle.
+        required: true
+      - type: string
+        name: value_scale
+        description: raw_counts, raw_intensity, background_subtracted, scaled or arcsinh; raw for images.
+        required: true
+      - type: string
+        name: normalization_id
+        description: Equal to value_scale, since usbb never normalises.
+        required: true
+      - type: object
+        name: patch
+        description: Patch geometry, {um_per_px, size_px}. Image modalities only.
+        required: false

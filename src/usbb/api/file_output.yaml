@@ -1,0 +1,57 @@
+type: file
+label: Method output
+summary: "Named embeddings of the test units: one obsm entry per latent of the method card."
+description: |
+  Written to `<run_dir>/output/output.h5ad`, with RUN.json beside it.
+  obs_names are the test unit ids in test bundle order, and obs keeps the test bundle's obs columns.
+  obsm holds one float32 (n_units, d) matrix per output of the method card, named after its latent;
+  the keys of `uns/informed_by` list them. No X.
+info:
+  format:
+    type: h5ad
+    obs:
+      - type: string
+        name: store_id
+        description: Store the unit comes from.
+        required: true
+      - type: string
+        name: section_id
+        description: Tissue section of the unit.
+        required: true
+      - type: string
+        name: sample_id
+        description: Sample of the unit.
+        required: true
+      - type: string
+        name: patient_id
+        description: Patient of the unit.
+        required: true
+      - type: string
+        name: core_id
+        description: Tissue microarray core of the unit, for TMA stores only.
+        required: false
+    uns:
+      - type: string
+        name: dataset_id
+        description: Dataset of the test bundle.
+        required: true
+      - type: string
+        name: method_id
+        description: Method that wrote the file.
+        required: true
+      - type: string
+        name: normalization_id
+        description: Normalization ids of the test bundle files, sorted and joined with "+".
+        required: true
+      - type: string
+        name: unit_type
+        description: spot, pseudospot or cell.
+        required: true
+      - type: string
+        name: run_key
+        description: Run key of the run that wrote the file, as in RUN.json.
+        required: true
+      - type: object
+        name: informed_by
+        description: For each latent, the modalities that informed it at inference (for fusers, those of the upstream outputs).
+        required: true
