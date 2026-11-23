@@ -1,0 +1,32 @@
+method_id: resnet50
+class: ResNet50
+label: ResNet-50 (ImageNet)
+summary: "ImageNet baseline for the H&E encoders: pooled last-stage features (2048) of torchvision's ResNet-50 on 224 px patches."
+description: >-
+  ResNet-50 trained on ImageNet-1k (1.28M natural photos), with the original torchvision weights
+  as ported to timm (resnet50.tv_in1k). Used frozen: the embedding of a patch is the average-pooled
+  output of the last stage. It sees the same 224 px patches at 0.5 µm/px as Phikon-v2.
+references: {doi: ["10.48550/arXiv.1512.03385"]}
+links: {repository: "https://huggingface.co/timm/resnet50.tv_in1k", documentation: null}
+family: encoder
+control: false
+fit_mode: frozen
+units: [spot, pseudospot]
+inputs:
+  he: {kind: image, um_per_px: 0.5, patch_px: 224}
+outputs:
+  - {latent: pooled, informed_by: [he]}
+parameters: {}
+weights:
+  repo: timm/resnet50.tv_in1k
+  revision: "78f3ecfdb38e06d9b8397f662e7ab8fee96026fa"
+  files:
+    model.safetensors: "5d061a3c593d795bfe682d9b152bafbcf550579873492def3515b46db1189888"
+  licence: BSD-3-Clause
+  release_date: "2023-04-05"
+env_group: torch
+resources: {cpu: lowcpu, memory: lowmem, time: lowtime, gpu: gpu}
+heldout: {tenx_tonsil: N}
+intended_usage: >-
+  The floor for the pathology encoders, on the same patches: an H&E encoder that does not beat
+  it gains nothing here from its pathology pretraining.

@@ -1,0 +1,33 @@
+method_id: phikon_v2
+class: PhikonV2
+label: Phikon-v2
+summary: "Owkin's ViT-L/16 pathology encoder (DINOv2), frozen: the CLS token of each 224 px H&E patch at 0.5 µm/px."
+description: >-
+  Phikon-v2 is a ViT-L/16 trained with DINOv2 on PANCAN-XL, 456M H&E tiles of 224 px at 20x
+  from about 60,000 public slides (TCGA, CPTAC, GTEx and others). Used frozen: the embedding of a
+  patch is the CLS token of the last layer, after the final layer norm (1024 values).
+references: {doi: ["10.48550/arXiv.2409.09173"]}
+links: {repository: "https://huggingface.co/owkin/phikon-v2", documentation: null}
+family: encoder
+control: false
+fit_mode: frozen
+units: [spot, pseudospot]
+inputs:
+  he: {kind: image, um_per_px: 0.5, patch_px: 224}
+outputs:
+  - {latent: cls, informed_by: [he]}
+parameters: {}
+weights:
+  repo: owkin/phikon-v2
+  revision: "2ae989a9c40cffaa27f0a6cb29cc94d1d6f9a5fd"
+  files:
+    config.json: "31b069a93e6b68741aba703e9b44b01c2e0d00a251023fde2af8e6fd80bc77fc"
+    model.safetensors: "261ae680fa699b3b951597fd57aa19c02ef735805acb104b93af69b36d928569"
+  licence: Owkin non-commercial licence (LICENSE.pdf in the repository)
+  release_date: "2024-05-17"
+env_group: torch
+resources: {cpu: lowcpu, memory: lowmem, time: lowtime, gpu: gpu}
+heldout: {tenx_tonsil: N}
+intended_usage: >-
+  Frozen H&E embedding of spots and pseudospots scanned at 0.5 µm/px or finer, next to the
+  ImageNet ResNet-50 baseline. Not for cells. Research use only under Owkin's licence.
