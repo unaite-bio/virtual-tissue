@@ -1,7 +1,7 @@
 # ------------------------------------------------------------
 # Data never lives in git. This list is a backstop, not the rule.
 # ------------------------------------------------------------
-data/
+/data/
 raw/
 **/spatial/
 
