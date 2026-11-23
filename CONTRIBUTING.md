@@ -33,7 +33,7 @@ Direct pushes to `main` are blocked — all changes go through a PR.
 - Open a **Method** issue and work on a branch `feat/<method_id>`.
 - No guide yet? Copy the [guide template](src/usbb/methods/_template/README.md)
   to `src/usbb/methods/<method_id>/README.md`.
-- Lock files (`conda-lock.yml`) are generated and do not count toward the
+- The lock file (`pixi.lock`) is generated and does not count toward the
   400-line PR limit.
 
 ## Day-to-day tips
