@@ -1,0 +1,13 @@
+# Two small synthetic stores, for checking the launcher end to end on a laptop.
+# Write the stores once, from the repo root in the core environment:
+#   python -c "from usbb.data.synthetic import synthetic_store as s; [s(i, n).write(f'data/processed/synthetic/{i}.zarr') for n, i in enumerate(['synthetic_a', 'synthetic_b'])]"
+# Paths are relative to the repo root.
+dataset: data/processed/synthetic/
+unit: spot
+split: {by: store_id, test: [synthetic_b]}
+seed: 0
+methods:
+  - random_features
+  - hvg_pca: {n_components: 10}
+  - mean_intensity
+  - concat: {inputs: [hvg_pca, mean_intensity]}

@@ -20,3 +20,10 @@ repos:
     rev: v8.30.0
     hooks:
       - id: gitleaks
+  - repo: local
+    hooks:
+      - id: no-local-only-files
+        name: local-only files stay out of git (local/, usbb.local.toml)
+        entry: local/ and usbb.local.toml hold one machine's settings and must never be committed
+        language: fail
+        files: ^local/|(^|/)usbb\.local\.toml$

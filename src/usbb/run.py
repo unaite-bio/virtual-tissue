@@ -27,7 +27,7 @@ class InputRefused(Exception):
     """The method cannot run on this input; raised before anything is loaded."""
 
 
-def _sha256(path, text=False) -> str:
+def file_sha256(path, text=False) -> str:
     """sha256 of a file; text is hashed with LF line endings so Windows and Linux checkouts agree."""
     if text:
         return hashlib.sha256(Path(path).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
@@ -39,7 +39,9 @@ def _sha256(path, text=False) -> str:
 
 
 def _files_hash(root, files, text=False) -> str:
-    lines = sorted(f"{file.relative_to(root).as_posix()} {_sha256(file, text)}" for file in files)
+    lines = sorted(
+        f"{file.relative_to(root).as_posix()} {file_sha256(file, text)}" for file in files
+    )
     return hashlib.sha256("\n".join(lines).encode()).hexdigest()
 
 
@@ -55,7 +57,7 @@ def run_key(card, params, seed, train_dir, test_dir, env_lock=None) -> str:
     core = [PACKAGE / name for name in CORE_FILES] + sorted((PACKAGE / "api").glob("*.yaml"))
     record = {
         "method_id": card.method_id,
-        "card": _sha256(card.path, text=True),
+        "card": file_sha256(card.path, text=True),
         "core": _files_hash(PACKAGE, [file for file in core if file.exists()], text=True),
         "method_folder": folder_hash(card.path.parent, text=True),
         "params": dict(card.parameters, **(params or {})),
@@ -64,7 +66,7 @@ def run_key(card, params, seed, train_dir, test_dir, env_lock=None) -> str:
         "train": folder_hash(train_dir) if card.fit_mode == "fitted" and train_dir else None,
         "test": folder_hash(test_dir),
         "weights": (card.weights or {}).get("files", {}),
-        "env_lock": _sha256(env_lock, text=True) if env_lock else None,
+        "env_lock": file_sha256(env_lock, text=True) if env_lock else None,
     }
     return hashlib.sha256(
         json.dumps(record, sort_keys=True, separators=(",", ":")).encode()
