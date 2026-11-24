@@ -4,7 +4,7 @@
 
 USBB (Unaite Spatial Biology Benchmark) is the code that runs every method of our benchmark (encoders, baselines, fusion and integration methods) the same way, on the same data, and keeps a record of each run. Evaluation is a separate layer that reads the results.
 
-![USBB codebase: a tissue store is prepared into method inputs, a method runs on them and writes its output, and evaluation turns outputs into scores; below, which files live where](assets/wrappers/usbb-codebase.svg)
+![USBB codebase: a tissue store is prepared into method inputs, a method runs on them and writes its output, and evaluation turns outputs into scores; below, which files live where](../assets/wrappers/usbb-codebase.svg)
 
 ## How a run flows
 

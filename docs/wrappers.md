@@ -7,7 +7,7 @@ Draft v0, 2026-11-16, nothing implemented yet. Package `src/usbb`, branch `featu
 
 One object per method (encoder, translator, fuser, matcher) that can be **loaded**, **applied** to units (spot, pseudospot, cell), **read** in one standard output, and **identified** by a card. Unimodal and multimodal methods share one interface. Adding or removing a method touches one class, one card, one YAML. Evaluation is a separate layer that never imports a method.
 
-![Wrapper architecture. Data from H&E, Visium and PhenoCycler, at spot, pseudospot or cell level, are harmonised per modality and checked, then handled by method wrappers (encoders, a fuser, translators, matchers), each with a method card and a fit mode, running in per-method environment groups. Wrappers write an Embedding file, a run record and the method card; a separate evaluation layer reads only those files and cards.](assets/wrappers/wrappers-overview.svg)
+![Wrapper architecture. Data from H&E, Visium and PhenoCycler, at spot, pseudospot or cell level, are harmonised per modality and checked, then handled by method wrappers (encoders, a fuser, translators, matchers), each with a method card and a fit mode, running in per-method environment groups. Wrappers write an Embedding file, a run record and the method card; a separate evaluation layer reads only those files and cards.](../assets/wrappers/wrappers-overview.svg)
 
 **Figure 1.** Planned wrapper architecture (design draft). Wrappers write an `Embedding` file, a run record and the card; evaluation reads only those. Controls such as the random-feature encoder are ordinary registry entries and are not drawn separately. Annex figures A1–A6 at the end detail the parts that need it.
 
@@ -75,22 +75,22 @@ Random-feature control; ImageNet ResNet50 and one fetchable pathology foundation
 ## Annex
 
 **A1. Method and MethodCard.** The card is data (YAML, readable without loading the method); the method is code. The runner and evaluation read the card, evaluation never imports the method.
-![Annex A1: the MethodCard fields grouped as identity, what it handles, how it behaves, and runs and checks, next to the Method class with load, check_inputs, fit, transform and fit_transform; the runner and evaluation read the card.](assets/wrappers/annex-a1-card-vs-method.svg)
+![Annex A1: the MethodCard fields grouped as identity, what it handles, how it behaves, and runs and checks, next to the Method class with load, check_inputs, fit, transform and fit_transform; the runner and evaluation read the card.](../assets/wrappers/annex-a1-card-vs-method.svg)
 
 **A2. Method families.** What each family takes in and gives out, with examples from the plan.
-![Annex A2: five method families (encoder, joint encoder, fuser, translator, matcher) with their inputs, outputs and examples.](assets/wrappers/annex-a2-families.svg)
+![Annex A2: five method families (encoder, joint encoder, fuser, translator, matcher) with their inputs, outputs and examples.](../assets/wrappers/annex-a2-families.svg)
 
 **A3. What an output file contains.** Values, unit IDs, unit type, sample and run key; joining by ID; prediction files with named columns. Numbers are illustrative.
-![Annex A3: an Embedding file with unit_ids and an n_units by d values matrix, the fields carried with it, a join of two methods on unit IDs, and a prediction file with named marker columns.](assets/wrappers/annex-a3-output-file.svg)
+![Annex A3: an Embedding file with unit_ids and an n_units by d values matrix, the fields carried with it, a join of two methods on unit IDs, and a prediction file with named marker columns.](../assets/wrappers/annex-a3-output-file.svg)
 
 **A4. Fit modes.** What frozen, fitted and transductive methods may learn from under leave-one-sample-out.
-![Annex A4: frozen, fitted and transductive methods across four sections with S4 held out, and the rule the harness applies to each.](assets/wrappers/annex-a4-fit-modes.svg)
+![Annex A4: frozen, fitted and transductive methods across four sections with S4 held out, and the rule the harness applies to each.](../assets/wrappers/annex-a4-fit-modes.svg)
 
 **A5. Harmonisation and input check.** Per-modality preparation, the report of changes, and the checks that run before any compute.
-![Annex A5: harmonisers for H&E, Visium and PhenoCycler inputs, the report stored with the run, and the check_inputs decision to run or refuse.](assets/wrappers/annex-a5-harmonisation.svg)
+![Annex A5: harmonisers for H&E, Visium and PhenoCycler inputs, the report stored with the run, and the check_inputs decision to run or refuse.](../assets/wrappers/annex-a5-harmonisation.svg)
 
 **A6. Run identity and cache.** What goes into the run key, what is written for each run, and when a result is reused.
-![Annex A6: six inputs hashed into a run key, the three files written for each run and sample, and the rule for reusing a result.](assets/wrappers/annex-a6-run-identity.svg)
+![Annex A6: six inputs hashed into a run key, the three files written for each run and sample, and the rule for reusing a result.](../assets/wrappers/annex-a6-run-identity.svg)
 
 ## Log
 
