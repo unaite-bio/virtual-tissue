@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" width="1100" height="520" role="img" aria-labelledby="ttl desc">
+  <title id="ttl">Annex A6: run identity and cache</title>
+  <desc id="desc">Six inputs are hashed into a run key: weights hash, revision, resolved config, harmonisation spec, input unit set and usbb commit. For each run key and sample, three things are written in order: the Embedding file, RUN.json, and a completion marker. A later run reuses the result only if the run key matches and the marker is present; otherwise it runs again. One failed unit fails the run, so no marker is written.</desc>
+  <style>
+    text { fill: #171A43; font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; }
+    .h  { font-size: 17px; font-weight: 700; letter-spacing: 0.04em; }
+    .col{ font-size: 13px; font-weight: 700; letter-spacing: 0.06em; fill: #4B4F78; }
+    .t  { font-size: 14px; font-weight: 700; }
+    .t16{ font-size: 16px; font-weight: 700; }
+    .s  { font-size: 13px; }
+    .g  { font-size: 13px; fill: #4B4F78; }
+    .n  { font-size: 13px; fill: #5A5D82; }
+    .m  { font-size: 13px; font-weight: 500; font-family: Consolas, "Courier New", monospace; }
+    .mb { font-size: 13px; font-weight: 700; font-family: Consolas, "Courier New", monospace; }
+    .w  { font-size: 13px; font-weight: 700; fill: #FFFFFF; }
+    .c  { text-anchor: middle; }
+    .e  { text-anchor: end; }
+  </style>
+  <defs>
+    <marker id="a-ink" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#171A43"/></marker>
+  </defs>
+  <rect width="1100" height="520" fill="#FFFFFF"/>
+
+  <text class="h" x="24" y="36">ANNEX A6: RUN IDENTITY AND CACHE</text>
+  <text class="n e" x="1076" y="36">design draft, not implemented</text>
+  <text class="g" x="24" y="62">A result is reused only if its run key matches and the run finished. A path alone is never a cache hit.</text>
+
+  <text class="col" x="24" y="88">WHAT GOES INTO THE KEY</text>
+  <rect x="24" y="98"  width="250" height="34" rx="8" fill="#F0EFFE" stroke="#B9B1FF" stroke-width="1.6"/><text class="m" x="40" y="120">weights hash</text>
+  <rect x="24" y="140" width="250" height="34" rx="8" fill="#F0EFFE" stroke="#B9B1FF" stroke-width="1.6"/><text class="m" x="40" y="162">revision</text>
+  <rect x="24" y="182" width="250" height="34" rx="8" fill="#F0EFFE" stroke="#B9B1FF" stroke-width="1.6"/><text class="m" x="40" y="204">resolved config</text>
+  <rect x="24" y="224" width="250" height="34" rx="8" fill="#F0EFFE" stroke="#B9B1FF" stroke-width="1.6"/><text class="m" x="40" y="246">harmonisation spec</text>
+  <rect x="24" y="266" width="250" height="34" rx="8" fill="#F0EFFE" stroke="#B9B1FF" stroke-width="1.6"/><text class="m" x="40" y="288">input unit set</text>
+  <rect x="24" y="308" width="250" height="34" rx="8" fill="#F0EFFE" stroke="#B9B1FF" stroke-width="1.6"/><text class="m" x="40" y="330">usbb commit</text>
+  <g stroke="#B9B1FF" stroke-width="1.6" fill="none">
+    <path d="M274,115 L330,215"/><path d="M274,157 L330,218"/><path d="M274,199 L330,221"/>
+    <path d="M274,241 L330,224"/><path d="M274,283 L330,227"/><path d="M274,325 L330,230"/>
+  </g>
+  <text class="g" x="24" y="366">change any one: new run key</text>
+
+  <rect x="330" y="194" width="110" height="52" rx="10" fill="#FFFFFF" stroke="#171A43" stroke-width="2"/>
+  <text class="t c" x="385" y="225">hash</text>
+  <line x1="440" y1="220" x2="478" y2="220" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+  <rect x="480" y="194" width="150" height="52" rx="10" fill="#E9E7FF" stroke="#6E62FF" stroke-width="2.4"/>
+  <text class="mb c" x="555" y="225">run key</text>
+  <line x1="630" y1="220" x2="688" y2="220" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+
+  <!-- files -->
+  <rect x="690" y="86" width="386" height="270" rx="12" fill="#FFFFFF" stroke="#171A43" stroke-width="2"/>
+  <text class="t16" x="710" y="114">Written for each (run key, sample)</text>
+  <circle cx="722" cy="146" r="12" fill="#171A43"/><text class="w c" x="722" y="151">1</text>
+  <text class="t" x="746" y="146">Embedding file</text>
+  <text class="s" x="746" y="165">values, unit_ids, unit_type, store_id, latent</text>
+  <circle cx="722" cy="206" r="12" fill="#171A43"/><text class="w c" x="722" y="211">2</text>
+  <text class="mb" x="746" y="206">RUN.json</text>
+  <text class="s" x="746" y="225">env lock hash, seed, hardware, wall time,</text>
+  <text class="s" x="746" y="242">failed units</text>
+  <circle cx="722" cy="296" r="12" fill="#171A43"/><text class="w c" x="722" y="301">3</text>
+  <text class="t" x="746" y="296">Completion marker</text>
+  <text class="s" x="746" y="315">written last, so it exists only for a finished run</text>
+
+  <!-- cache decision -->
+  <text class="col" x="24" y="404">NEXT TIME</text>
+  <rect x="24" y="420" width="300" height="60" rx="10" fill="#FFFFFF" stroke="#171A43" stroke-width="2"/>
+  <text class="t" x="40" y="446">Same run key and</text><text class="t" x="40" y="465">completion marker present?</text>
+  <path d="M324,440 H352 V420 H378" fill="none" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+  <path d="M324,460 H352 V484 H378" fill="none" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+  <rect x="380" y="400" width="210" height="40" rx="10" fill="#E9E7FF" stroke="#6E62FF" stroke-width="2.2"/>
+  <text class="t" x="396" y="425">yes: reuse the file</text>
+  <rect x="380" y="464" width="210" height="40" rx="10" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.8"/>
+  <text class="t" x="396" y="489">no: run the method</text>
+
+  <rect x="630" y="400" width="446" height="104" rx="10" fill="#FFFFFF" stroke="#171A43" stroke-width="2" stroke-dasharray="6 4"/>
+  <text class="t" x="646" y="428">One failed unit fails the run</text>
+  <text class="s" x="646" y="450">no completion marker is written, so the file is</text>
+  <text class="s" x="646" y="467">never reused; failed units are listed in RUN.json.</text>
+</svg>

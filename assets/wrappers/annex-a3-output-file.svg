@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" width="1100" height="540" role="img" aria-labelledby="ttl desc">
+  <title id="ttl">Annex A3: what an output file contains</title>
+  <desc id="desc">An Embedding file has one row per unit: unit_ids on the left and the values matrix of n_units by d on the right, plus unit_type, store_id and run key. Two methods are joined on unit_ids, not on row order. A translator's prediction file has named marker columns instead of embedding dimensions. Values are illustrative; the IDs are Visium barcodes from the 10x tonsil dataset.</desc>
+  <style>
+    text { fill: #171A43; font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; }
+    .h  { font-size: 17px; font-weight: 700; letter-spacing: 0.04em; }
+    .t  { font-size: 14px; font-weight: 700; }
+    .t16{ font-size: 16px; font-weight: 700; }
+    .s  { font-size: 13px; }
+    .g  { font-size: 13px; fill: #4B4F78; }
+    .n  { font-size: 13px; fill: #5A5D82; }
+    .m  { font-size: 13px; font-weight: 500; font-family: Consolas, "Courier New", monospace; }
+    .mb { font-size: 13px; font-weight: 700; font-family: Consolas, "Courier New", monospace; }
+    .c  { text-anchor: middle; }
+    .e  { text-anchor: end; }
+  </style>
+  <rect width="1100" height="540" fill="#FFFFFF"/>
+
+  <text class="h" x="24" y="36">ANNEX A3: WHAT AN OUTPUT FILE CONTAINS</text>
+  <text class="n e" x="1076" y="36">design draft, not implemented</text>
+  <text class="g" x="24" y="62">One file per run. Numbers are illustrative; IDs are real 10x tonsil barcodes, shown without their store_id: prefix.</text>
+
+  <!-- embedding table -->
+  <rect x="24" y="84" width="612" height="236" rx="12" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="t16" x="44" y="112">Embedding</text>
+  <text class="g" x="140" y="112">output_type = embedding, one per named latent</text>
+
+  <rect x="44" y="128" width="200" height="130" fill="#FFFFFF" stroke="#171A43" stroke-width="2"/>
+  <rect x="244" y="128" width="372" height="130" fill="#F0EFFE" stroke="#6E62FF" stroke-width="2"/>
+  <line x1="44" y1="156" x2="616" y2="156" stroke="#B9B1FF" stroke-width="1.4"/>
+  <line x1="44" y1="184" x2="616" y2="184" stroke="#D5D6EA" stroke-width="1"/>
+  <line x1="44" y1="212" x2="616" y2="212" stroke="#D5D6EA" stroke-width="1"/>
+  <line x1="44" y1="240" x2="616" y2="240" stroke="#D5D6EA" stroke-width="1"/>
+  <text class="mb" x="56" y="147">unit_ids</text>
+  <text class="mb c" x="294" y="147">v1</text><text class="mb c" x="384" y="147">v2</text><text class="mb c" x="466" y="147">…</text><text class="mb c" x="568" y="147">vd</text>
+  <text class="m" x="56" y="175">CGGTTAGGCCTGGACG-1</text>
+  <text class="m" x="56" y="203">GATATCACCAGCATGG-1</text>
+  <text class="m" x="56" y="231">TCGCCTTGTTCTGATT-1</text>
+  <text class="m" x="56" y="253">⋮</text>
+  <text class="m c" x="294" y="175">0.42</text><text class="m c" x="384" y="175">−0.17</text><text class="m c" x="466" y="175">…</text><text class="m c" x="568" y="175">0.08</text>
+  <text class="m c" x="294" y="203">0.39</text><text class="m c" x="384" y="203">−0.21</text><text class="m c" x="466" y="203">…</text><text class="m c" x="568" y="203">0.11</text>
+  <text class="m c" x="294" y="231">−0.05</text><text class="m c" x="384" y="231">0.33</text><text class="m c" x="466" y="231">…</text><text class="m c" x="568" y="231">−0.27</text>
+  <text class="s" x="44" y="282">unit_ids: one ID per row</text>
+  <text class="g" x="44" y="300">identity, not position</text>
+  <text class="s" x="244" y="282">values: matrix n_units × d</text>
+  <text class="g" x="244" y="300">row i is the vector of unit_ids[i]</text>
+
+  <!-- carried -->
+  <rect x="656" y="84" width="420" height="236" rx="12" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="t16" x="676" y="112">Carried with the file</text>
+  <text class="mb" x="676" y="140">unit_type</text>
+  <text class="s"  x="676" y="157">spot, pseudospot or cell; one value per file</text>
+  <text class="mb" x="676" y="178">store_id</text>
+  <text class="s"  x="676" y="195">per row: the store the unit comes from</text>
+  <text class="mb" x="676" y="216">run key</text>
+  <text class="s"  x="676" y="233">exact method and config (see Annex A6)</text>
+  <text class="mb" x="676" y="254">latent</text>
+  <text class="s"  x="676" y="271">fused, shared, private or per-modality</text>
+  <text class="mb" x="676" y="292">informed_by</text>
+  <text class="s"  x="676" y="309">modalities that influenced it at inference</text>
+
+  <!-- join -->
+  <rect x="24" y="344" width="520" height="176" rx="12" fill="#FFFFFF" stroke="#171A43" stroke-width="1.8"/>
+  <text class="t16" x="44" y="372">Join on unit_ids, not row order</text>
+  <text class="g" x="60" y="396">method A</text>
+  <text class="g" x="380" y="396">method B</text>
+  <rect x="44" y="404" width="150" height="84" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6"/>
+  <rect x="350" y="404" width="150" height="84" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6"/>
+  <line x1="44" y1="432" x2="194" y2="432" stroke="#D5D6EA"/><line x1="44" y1="460" x2="194" y2="460" stroke="#D5D6EA"/>
+  <line x1="350" y1="432" x2="500" y2="432" stroke="#D5D6EA"/><line x1="350" y1="460" x2="500" y2="460" stroke="#D5D6EA"/>
+  <text class="m" x="56" y="423">CGGTTAGG…</text><text class="m" x="56" y="451">GATATCAC…</text><text class="m" x="56" y="479">TCGCCTTG…</text>
+  <text class="m" x="362" y="423">TCGCCTTG…</text><text class="m" x="362" y="451">CGGTTAGG…</text><text class="m" x="362" y="479">GATATCAC…</text>
+  <path d="M194,418 C270,418 280,446 350,446" fill="none" stroke="#4B4F78" stroke-width="2"/>
+  <path d="M194,446 C270,446 280,474 350,474" fill="none" stroke="#4B4F78" stroke-width="2" stroke-dasharray="7 4"/>
+  <path d="M194,474 C270,474 280,418 350,418" fill="none" stroke="#4B4F78" stroke-width="2" stroke-dasharray="2 4"/>
+  <text class="g c" x="272" y="508">same spots, different row order: match by ID</text>
+
+  <!-- prediction -->
+  <rect x="564" y="344" width="512" height="176" rx="12" fill="#FFFFFF" stroke="#171A43" stroke-width="1.8"/>
+  <text class="t16" x="584" y="372">Prediction output (translators)</text>
+  <text class="g" x="584" y="394">output_type = prediction</text>
+  <rect x="584" y="404" width="472" height="60" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6"/>
+  <rect x="784" y="404" width="272" height="60" fill="#E6F4F2" stroke="#159384" stroke-width="1.8"/>
+  <line x1="584" y1="432" x2="1056" y2="432" stroke="#B9B1FF" stroke-width="1.4"/>
+  <text class="mb" x="596" y="423">unit_ids</text>
+  <text class="mb c" x="824" y="423">PD-L1</text><text class="mb c" x="912" y="423">CD8</text><text class="mb c" x="1002" y="423">CD20</text>
+  <text class="m" x="596" y="455">CGGTTAGGCCTGGACG-1</text>
+  <text class="m c" x="824" y="455">0.61</text><text class="m c" x="912" y="455">0.12</text><text class="m c" x="1002" y="455">0.03</text>
+  <text class="s" x="584" y="488">columns are named markers, not anonymous dimensions,</text>
+  <text class="s" x="584" y="506">so the file also stores the column names</text>
+</svg>

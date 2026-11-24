@@ -1,7 +1,7 @@
 # ------------------------------------------------------------
 # Data never lives in git. This list is a backstop, not the rule.
 # ------------------------------------------------------------
-data/
+/data/
 raw/
 **/spatial/
 
@@ -57,6 +57,7 @@ __pycache__/
 .mypy_cache/
 wandb/
 mlruns/
+results/
 outputs/
 runs/
 logs/

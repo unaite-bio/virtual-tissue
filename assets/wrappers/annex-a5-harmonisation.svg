@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" width="1100" height="540" role="img" aria-labelledby="ttl desc">
+  <title id="ttl">Annex A5: harmonisation and input check</title>
+  <desc id="desc">Per-modality harmonisers prepare inputs for a method: a patch spec for H&amp;E images, a gene vocabulary mapping for Visium counts, and a marker mapping through UniProt or HGNC to the method's vocabulary for the PhenoCycler panel. Every change goes into a report stored with the run. Before any compute, check_inputs tests that the modality, the unit and the vocabulary overlap are supported; if all pass the method runs, otherwise it refuses and the reason goes into the report.</desc>
+  <style>
+    text { fill: #171A43; font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; }
+    .h  { font-size: 17px; font-weight: 700; letter-spacing: 0.04em; }
+    .t  { font-size: 14px; font-weight: 700; }
+    .t16{ font-size: 16px; font-weight: 700; }
+    .s  { font-size: 13px; }
+    .g  { font-size: 13px; fill: #4B4F78; }
+    .n  { font-size: 13px; fill: #5A5D82; }
+    .mb { font-size: 13px; font-weight: 700; font-family: Consolas, "Courier New", monospace; }
+    .c  { text-anchor: middle; }
+    .e  { text-anchor: end; }
+  </style>
+  <defs>
+    <marker id="a-ink" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#171A43"/></marker>
+    <marker id="a-he"  viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#BA3F84"/></marker>
+    <marker id="a-vis" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#6E62FF"/></marker>
+    <marker id="a-phe" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#159384"/></marker>
+  </defs>
+  <rect width="1100" height="540" fill="#FFFFFF"/>
+
+  <text class="h" x="24" y="36">ANNEX A5: HARMONISATION AND INPUT CHECK</text>
+  <text class="n e" x="1076" y="36">design draft, not implemented</text>
+  <text class="g" x="24" y="62">Methods never see raw data. A harmoniser per modality prepares what the card accepts and reports every change.</text>
+
+  <!-- H&E lane -->
+  <rect x="24" y="92" width="200" height="72" rx="10" fill="#FFFFFF" stroke="#BA3F84" stroke-width="2.2"/>
+  <text class="t16" x="40" y="120">H&amp;E image</text><text class="g" x="40" y="142">+ unit coordinates</text>
+  <line x1="224" y1="128" x2="254" y2="128" stroke="#BA3F84" stroke-width="2" marker-end="url(#a-he)"/>
+  <rect x="256" y="92" width="330" height="72" rx="10" fill="#FBEFF5" stroke="#BA3F84" stroke-width="1.8"/>
+  <text class="t" x="272" y="120">Patch spec from the card</text><text class="s" x="272" y="142">fixed µm/px, patch size</text>
+  <line x1="586" y1="128" x2="614" y2="128" stroke="#BA3F84" stroke-width="2" marker-end="url(#a-he)"/>
+  <rect x="616" y="92" width="210" height="72" rx="10" fill="#FFFFFF" stroke="#BA3F84" stroke-width="2.2"/>
+  <text class="t" x="632" y="120">Patches</text><text class="g" x="632" y="142">one per unit</text>
+
+  <!-- RNA lane -->
+  <rect x="24" y="174" width="200" height="72" rx="10" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2.2"/>
+  <text class="t16" x="40" y="202">Visium counts</text><text class="g" x="40" y="224">spots × genes</text>
+  <line x1="224" y1="210" x2="254" y2="210" stroke="#6E62FF" stroke-width="2" marker-end="url(#a-vis)"/>
+  <rect x="256" y="174" width="330" height="72" rx="10" fill="#EFEEFF" stroke="#6E62FF" stroke-width="1.8"/>
+  <text class="t" x="272" y="202">Gene vocabulary mapping</text><text class="s" x="272" y="224">keeps the raw-counts layer</text>
+  <line x1="586" y1="210" x2="614" y2="210" stroke="#6E62FF" stroke-width="2" marker-end="url(#a-vis)"/>
+  <rect x="616" y="174" width="210" height="72" rx="10" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2.2"/>
+  <text class="t" x="632" y="202">Genes</text><text class="g" x="632" y="224">in the method's vocabulary</text>
+
+  <!-- protein lane -->
+  <rect x="24" y="256" width="200" height="72" rx="10" fill="#FFFFFF" stroke="#159384" stroke-width="2.2"/>
+  <text class="t16" x="40" y="284">PhenoCycler panel</text><text class="g" x="40" y="306">markers measured</text>
+  <line x1="224" y1="292" x2="254" y2="292" stroke="#159384" stroke-width="2" marker-end="url(#a-phe)"/>
+  <rect x="256" y="256" width="330" height="72" rx="10" fill="#E6F4F2" stroke="#159384" stroke-width="1.8"/>
+  <text class="t" x="272" y="280">Marker mapping</text><text class="s" x="272" y="300">panel → UniProt / HGNC</text><text class="s" x="272" y="317">→ method vocabulary</text>
+  <line x1="586" y1="292" x2="614" y2="292" stroke="#159384" stroke-width="2" marker-end="url(#a-phe)"/>
+  <rect x="616" y="256" width="210" height="72" rx="10" fill="#FFFFFF" stroke="#159384" stroke-width="2.2"/>
+  <text class="t" x="632" y="284">Markers</text><text class="g" x="632" y="306">in the method's vocabulary</text>
+
+  <!-- report -->
+  <line x1="826" y1="128" x2="850" y2="128" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+  <line x1="826" y1="210" x2="850" y2="210" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+  <line x1="826" y1="292" x2="850" y2="292" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+  <rect x="852" y="92" width="224" height="236" rx="12" fill="#FFFFFF" stroke="#171A43" stroke-width="2.4"/>
+  <text class="t16" x="868" y="120">Report</text><text class="g" x="868" y="139">stored with the run</text>
+  <circle cx="874" cy="170" r="3" fill="#171A43"/><text class="s" x="886" y="175">patch spec used</text>
+  <circle cx="874" cy="198" r="3" fill="#171A43"/><text class="s" x="886" y="203">mapped markers, genes</text>
+  <circle cx="874" cy="226" r="3" fill="#171A43"/><text class="s" x="886" y="231">unmapped ones, listed</text>
+  <circle cx="874" cy="254" r="3" fill="#171A43"/><text class="s" x="886" y="259">one-to-many, listed</text>
+  <text class="t" x="868" y="298">nothing dropped silently</text>
+
+  <!-- gate -->
+  <rect x="24" y="352" width="200" height="150" rx="10" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="mb" x="40" y="376">check_inputs</text>
+  <text class="s" x="40" y="396">runs before any compute,</text>
+  <text class="s" x="40" y="413">using the card's</text>
+  <text class="s" x="40" y="430">modalities_in, unit_in</text>
+  <text class="s" x="40" y="447">and vocabulary</text>
+
+  <rect x="256" y="352" width="200" height="44" rx="10" fill="#F7F6FF" stroke="#6E62FF" stroke-width="1.8"/><text class="t c" x="356" y="379">modality supported?</text>
+  <rect x="476" y="352" width="200" height="44" rx="10" fill="#F7F6FF" stroke="#6E62FF" stroke-width="1.8"/><text class="t c" x="576" y="379">unit supported?</text>
+  <rect x="696" y="352" width="200" height="44" rx="10" fill="#F7F6FF" stroke="#6E62FF" stroke-width="1.8"/><text class="t c" x="796" y="379">vocabulary overlap?</text>
+  <path d="M356,396 V408 M576,396 V408 M796,396 V408 M356,408 H796" fill="none" stroke="#171A43" stroke-width="1.6"/>
+  <line x1="406" y1="408" x2="406" y2="438" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+  <line x1="746" y1="408" x2="746" y2="438" stroke="#171A43" stroke-width="2" marker-end="url(#a-ink)"/>
+  <text class="g" x="416" y="428">all yes</text>
+  <text class="g" x="756" y="428">any no</text>
+
+  <rect x="256" y="440" width="300" height="62" rx="10" fill="#E9E7FF" stroke="#6E62FF" stroke-width="2.2"/>
+  <text class="t" x="272" y="466">run the method</text><text class="g" x="272" y="486">the three checks passed</text>
+  <rect x="596" y="440" width="300" height="62" rx="10" fill="#FFFFFF" stroke="#171A43" stroke-width="2" stroke-dasharray="6 4"/>
+  <text class="t" x="612" y="466">refuse</text><text class="g" x="612" y="486">the reason goes into the report</text>
+
+  <text class="g" x="916" y="440">A refusal costs no</text>
+  <text class="g" x="916" y="457">compute and no GPU</text>
+  <text class="g" x="916" y="474">time.</text>
+</svg>

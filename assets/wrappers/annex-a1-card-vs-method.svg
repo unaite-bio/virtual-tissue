@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 560" width="1100" height="560" role="img" aria-labelledby="ttl desc">
+  <title id="ttl">Annex A1: Method and MethodCard</title>
+  <desc id="desc">The MethodCard is data: a YAML file with identity, what the method handles, how it behaves, and where it runs. The Method is code: load, check_inputs, fit, transform and fit_transform. The runner and the evaluation layer read the card. Evaluation never imports the method.</desc>
+  <style>
+    text { fill: #171A43; font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; }
+    .h  { font-size: 17px; font-weight: 700; letter-spacing: 0.04em; }
+    .t  { font-size: 14px; font-weight: 700; }
+    .t16{ font-size: 16px; font-weight: 700; }
+    .s  { font-size: 13px; }
+    .g  { font-size: 13px; fill: #4B4F78; }
+    .n  { font-size: 13px; fill: #5A5D82; }
+    .m  { font-size: 13px; font-weight: 500; font-family: Consolas, "Courier New", monospace; }
+    .mb { font-size: 13px; font-weight: 700; font-family: Consolas, "Courier New", monospace; }
+    .c  { text-anchor: middle; }
+    .e  { text-anchor: end; }
+  </style>
+  <defs>
+    <marker id="a-ink" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#171A43"/></marker>
+    <marker id="a-vis" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#6E62FF"/></marker>
+  </defs>
+  <rect width="1100" height="560" fill="#FFFFFF"/>
+
+  <text class="h" x="24" y="36">ANNEX A1: METHOD AND METHODCARD</text>
+  <text class="n e" x="1076" y="36">design draft, not implemented</text>
+  <text class="g" x="24" y="62">The card is data, the method is code. The runner and evaluation read the card; only the method's own environment runs the code.</text>
+
+  <!-- MethodCard -->
+  <rect x="24" y="84" width="516" height="352" rx="12" fill="#FFFFFF" stroke="#6E62FF" stroke-width="2"/>
+  <text class="t16" x="44" y="112">MethodCard</text>
+  <text class="g" x="44" y="132">data in cards/&lt;id&gt;.yaml, readable without loading the method</text>
+
+  <rect x="44" y="146" width="232" height="130" rx="10" fill="#F0EFFE" stroke="#B9B1FF" stroke-width="1.6"/>
+  <text class="t" x="58" y="168">Identity</text>
+  <text class="m" x="58" y="186">method_id</text>
+  <text class="m" x="58" y="203">family</text>
+  <text class="m" x="58" y="220">revision</text>
+  <text class="m" x="58" y="237">weights_sha256</text>
+  <text class="m" x="58" y="254">licence</text>
+  <text class="m" x="58" y="271">release_date</text>
+
+  <rect x="292" y="146" width="232" height="130" rx="10" fill="#F0EFFE" stroke="#B9B1FF" stroke-width="1.6"/>
+  <text class="t" x="306" y="168">What it handles</text>
+  <text class="m" x="306" y="186">modalities_in/out</text>
+  <text class="m" x="306" y="203">unit_in/out</text>
+  <text class="m" x="306" y="220">input_kind</text>
+  <text class="m" x="306" y="237">vocabulary</text>
+  <text class="m" x="306" y="254">accepts_missing_modalities</text>
+
+  <rect x="44" y="288" width="232" height="136" rx="10" fill="#F0EFFE" stroke="#B9B1FF" stroke-width="1.6"/>
+  <text class="t" x="58" y="310">How it behaves</text>
+  <text class="m" x="58" y="328">fit_mode</text>
+  <text class="m" x="58" y="345">output_type</text>
+  <text class="m" x="58" y="362">outputs</text>
+  <text class="m" x="58" y="379">uses_labels</text>
+  <text class="m" x="58" y="396">needs_raw_counts</text>
+  <text class="m" x="58" y="413">stochastic</text>
+
+  <rect x="292" y="288" width="232" height="136" rx="10" fill="#F0EFFE" stroke="#B9B1FF" stroke-width="1.6"/>
+  <text class="t" x="306" y="310">Runs and checks</text>
+  <text class="m" x="306" y="328">env_group</text>
+  <text class="m" x="306" y="345">gpu</text>
+  <text class="m" x="306" y="362">heldout</text>
+  <text class="m" x="306" y="379">intended_usage</text>
+
+  <!-- link -->
+  <text class="g c" x="580" y="244">method_id</text>
+  <line x1="580" y1="260" x2="548" y2="260" stroke="#6E62FF" stroke-width="2" marker-end="url(#a-vis)"/>
+  <line x1="580" y1="260" x2="612" y2="260" stroke="#6E62FF" stroke-width="2" marker-end="url(#a-vis)"/>
+  <text class="g c" x="580" y="282">(registry)</text>
+
+  <!-- Method -->
+  <rect x="620" y="84" width="456" height="352" rx="12" fill="#FFFFFF" stroke="#171A43" stroke-width="2"/>
+  <text class="t16" x="640" y="112">Method</text>
+  <text class="g" x="640" y="132">code: a Method subclass that runs in its environment group</text>
+
+  <rect x="640" y="148" width="416" height="46" rx="8" fill="#F7F6FF" stroke="#4B4F78" stroke-width="1.4"/>
+  <text class="mb" x="656" y="168">load()</text>
+  <text class="s"  x="656" y="185">fetch the pinned weights, set the device</text>
+  <rect x="640" y="204" width="416" height="46" rx="8" fill="#F7F6FF" stroke="#4B4F78" stroke-width="1.4"/>
+  <text class="mb" x="656" y="224">check_inputs(inputs)</text>
+  <text class="s"  x="656" y="241">refuse an unsupported modality, unit or vocabulary</text>
+  <rect x="640" y="260" width="416" height="46" rx="8" fill="#F7F6FF" stroke="#4B4F78" stroke-width="1.4"/>
+  <text class="mb" x="656" y="280">fit(train_units)</text>
+  <text class="s"  x="656" y="297">fitted methods only</text>
+  <rect x="640" y="316" width="416" height="46" rx="8" fill="#F7F6FF" stroke="#4B4F78" stroke-width="1.4"/>
+  <text class="mb" x="656" y="336">transform(inputs)</text>
+  <text class="s"  x="656" y="353">returns an Embedding (or predictions)</text>
+  <rect x="640" y="372" width="416" height="46" rx="8" fill="#F7F6FF" stroke="#4B4F78" stroke-width="1.4"/>
+  <text class="mb" x="656" y="392">fit_transform(units)</text>
+  <text class="s"  x="656" y="409">transductive methods only</text>
+
+  <!-- readers -->
+  <line x1="152" y1="436" x2="152" y2="466" stroke="#6E62FF" stroke-width="2" marker-end="url(#a-vis)"/>
+  <line x1="418" y1="436" x2="418" y2="466" stroke="#6E62FF" stroke-width="2" marker-end="url(#a-vis)"/>
+  <rect x="24" y="468" width="256" height="72" rx="10" fill="#FFFFFF" stroke="#171A43" stroke-width="1.8"/>
+  <text class="t" x="40" y="490">Runner</text>
+  <text class="s" x="40" y="508">picks env_group and the GPU;</text>
+  <text class="s" x="40" y="524">refuses a mismatch early</text>
+  <rect x="296" y="468" width="244" height="72" rx="10" fill="#FFFFFF" stroke="#171A43" stroke-width="2.4"/>
+  <text class="t" x="312" y="490">Evaluation</text>
+  <text class="s" x="312" y="508">reads fit_mode, unit_type,</text>
+  <text class="s" x="312" y="524">output_type, held-out status</text>
+
+  <!-- blocked -->
+  <line x1="540" y1="504" x2="620" y2="504" stroke="#4B4F78" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <path d="M572,496 L588,512 M588,496 L572,512" stroke="#171A43" stroke-width="2.4" fill="none"/>
+  <rect x="620" y="468" width="456" height="72" rx="10" fill="#FFFFFF" stroke="#4B4F78" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <text class="t" x="636" y="490">Evaluation never imports the method</text>
+  <text class="s" x="636" y="508">the code runs only in its own environment group;</text>
+  <text class="s" x="636" y="524">evaluation sees its output files and card.</text>
+</svg>
